@@ -1,0 +1,345 @@
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
+import { TextareaComponent } from '../../../../shared/components/textarea/textarea.component';
+import { SelectComponent } from '../../../../shared/components/select/select.component';
+import { RadioGroupComponent } from '../../../../shared/components/radio-group/radio-group.component';
+import { SelectWithToggleComponent } from '../../../../shared/components/select-with-toggle/select-with-toggle.component';
+import { InputWithButtonComponent } from '../../../../shared/components/input-with-button/input-with-button.component';
+import { CheckboxComponent } from '../../../../shared/components/checkbox/checkbox.component';
+
+@Component({
+  selector: 'app-general-section',
+  imports: [
+    TextInputComponent,
+    TextareaComponent,
+    SelectComponent,
+    RadioGroupComponent,
+    SelectWithToggleComponent,
+    InputWithButtonComponent,
+    CheckboxComponent,
+  ],
+  template: `
+    <section
+      class="border-border-primary bg-surface-primary shadow-card rounded-xl border"
+    >
+      <!-- Header -->
+      <div class="p-3">
+        <div class="mb-1.5 flex items-center gap-3">
+          <svg
+            width="18"
+            height="20"
+            viewBox="0 0 18 20"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M6.46511 16.384L5.77961 16.6883L5.7798 16.6887L6.46511 16.384ZM6.99111 17.567L7.67657 17.2626L7.67642 17.2623L6.99111 17.567ZM8.81111 18.75L8.81123 18H8.81099L8.81111 18.75ZM10.6311 17.567L9.9458 17.2623L9.94565 17.2626L10.6311 17.567ZM11.1571 16.384L10.4722 16.0785L10.4718 16.0793L11.1571 16.384ZM12.0571 15.384L11.6824 14.7343L11.6814 14.7349L12.0571 15.384ZM13.3801 15.103L13.4595 14.3572L13.4584 14.3571L13.3801 15.103ZM14.6671 15.24L14.5877 15.9858L14.5882 15.9858L14.6671 15.24ZM16.6011 14.255L15.9518 13.8797L15.9515 13.8802L16.6011 14.255ZM16.4871 12.088L15.8807 12.5293L15.8807 12.5294L16.4871 12.088ZM15.7251 11.041L15.1172 11.4802L15.1187 11.4823L15.7251 11.041ZM15.3111 9.75L16.0611 9.75373V9.75H15.3111ZM15.7293 8.46368L15.1229 8.02234L15.1228 8.02249L15.7293 8.46368ZM16.4913 7.41668L17.0977 7.85802L17.0978 7.85794L16.4913 7.41668ZM16.6051 5.25L15.9555 5.62479L15.9558 5.62532L16.6051 5.25ZM14.6711 4.265L14.5922 3.51916L14.5917 3.51921L14.6711 4.265ZM13.3841 4.402L13.4624 5.1479L13.4635 5.14779L13.3841 4.402ZM12.0611 4.121L11.6843 4.7695L11.6864 4.77067L12.0611 4.121ZM11.1611 3.116L11.8471 2.81278L11.8456 2.80936L11.1611 3.116ZM10.6311 1.933L9.94565 2.23737L9.94666 2.23964L10.6311 1.933ZM8.81111 0.75L8.81099 1.5L8.81124 1.5L8.81111 0.75ZM6.99111 1.933L7.67642 2.23771L7.67657 2.23737L6.99111 1.933ZM6.46511 3.116L5.7798 2.81129L5.77914 2.81279L6.46511 3.116ZM5.56511 4.121L5.93986 4.77067L5.94188 4.7695L5.56511 4.121ZM4.24211 4.402L4.16297 5.14781L4.16378 5.1479L4.24211 4.402ZM2.95111 4.265L3.03026 3.51919L3.03 3.51916L2.95111 4.265ZM1.01711 5.25L1.66644 5.62533L1.66675 5.62479L1.01711 5.25ZM1.13111 7.417L1.73751 6.97567L1.73748 6.97562L1.13111 7.417ZM1.89311 8.464L2.4997 8.02292L2.49951 8.02267L1.89311 8.464ZM2.31111 9.75L1.56111 9.74986V9.75H2.31111ZM1.89288 11.0363L2.49928 11.4777L2.49938 11.4775L1.89288 11.0363ZM1.13111 12.083L1.73748 12.5244L1.73751 12.5243L1.13111 12.083ZM1.01711 14.25L1.66651 13.8748L1.66644 13.8747L1.01711 14.25ZM2.95111 15.235L3.02951 15.9809L3.0305 15.9808L2.95111 15.235ZM4.23811 15.098L4.15978 14.3521L4.15872 14.3522L4.23811 15.098ZM5.56111 15.379L5.93603 14.7294L5.93586 14.7293L5.56111 15.379ZM6.46511 16.384L5.7798 16.6887L6.3058 17.8717L6.99111 17.567L7.67642 17.2623L7.15042 16.0793L6.46511 16.384ZM6.99111 17.567L6.30565 17.8714C6.74545 18.8618 7.72751 19.5002 8.81124 19.5L8.81111 18.75L8.81099 18C8.32033 18.0001 7.8757 17.7111 7.67657 17.2626L6.99111 17.567ZM8.81111 18.75L8.81099 19.5C9.8947 19.5002 10.8768 18.8618 11.3166 17.8714L10.6311 17.567L9.94565 17.2626C9.74653 17.7111 9.30189 18.0001 8.81123 18L8.81111 18.75ZM10.6311 17.567L11.3164 17.8717L11.8424 16.6887L11.1571 16.384L10.4718 16.0793L9.9458 17.2623L10.6311 17.567ZM11.1571 16.384L11.8421 16.6895C11.965 16.414 12.1717 16.1842 12.4328 16.0331L12.0571 15.384L11.6814 14.7349C11.1469 15.0443 10.7237 15.5145 10.4722 16.0785L11.1571 16.384ZM12.0571 15.384L12.4319 16.0337C12.6951 15.8818 12.9996 15.8172 13.3018 15.8489L13.3801 15.103L13.4584 14.3571C12.8414 14.2923 12.2198 14.4243 11.6824 14.7343L12.0571 15.384ZM13.3801 15.103L13.3007 15.8488L14.5877 15.9858L14.6671 15.24L14.7465 14.4942L13.4595 14.3572L13.3801 15.103ZM14.6671 15.24L14.5882 15.9858C15.6657 16.0998 16.7093 15.5683 17.2507 14.6298L16.6011 14.255L15.9515 13.8802C15.7063 14.3051 15.2339 14.5458 14.746 14.4942L14.6671 15.24ZM16.6011 14.255L17.2504 14.6303C17.7927 13.6922 17.7312 12.5227 17.0935 11.6466L16.4871 12.088L15.8807 12.5294C16.1693 12.9258 16.1972 13.4551 15.9518 13.8797L16.6011 14.255ZM16.4871 12.088L17.0935 11.6467L16.3315 10.5997L15.7251 11.041L15.1187 11.4823L15.8807 12.5293L16.4871 12.088ZM15.7251 11.041L16.3331 10.6018C16.1548 10.3551 16.0596 10.0581 16.0611 9.75373L15.3111 9.75L14.5611 9.74626C14.558 10.3686 14.7527 10.9758 15.1172 11.4802L15.7251 11.041ZM15.3111 9.75H16.0611C16.0611 9.44632 16.1574 9.15022 16.3359 8.90487L15.7293 8.46368L15.1228 8.02249C14.7577 8.52447 14.5611 9.12954 14.5611 9.75H15.3111ZM15.7293 8.46368L16.3357 8.90502L17.0977 7.85802L16.4913 7.41668L15.8849 6.97534L15.1229 8.02234L15.7293 8.46368ZM16.4913 7.41668L17.0978 7.85794C17.7352 6.98193 17.7966 5.81262 17.2544 4.87468L16.6051 5.25L15.9558 5.62532C16.2011 6.0498 16.1733 6.57898 15.8849 6.97542L16.4913 7.41668ZM16.6051 5.25L17.2547 4.87521C16.7133 3.93667 15.6697 3.40518 14.5922 3.51916L14.6711 4.265L14.75 5.01084C15.2379 4.95924 15.7103 5.19987 15.9555 5.62479L16.6051 5.25ZM14.6711 4.265L14.5917 3.51921L13.3047 3.65621L13.3841 4.402L13.4635 5.14779L14.7505 5.01079L14.6711 4.265ZM13.3841 4.402L13.3058 3.6561C13.0036 3.68784 12.6991 3.62317 12.4359 3.47134L12.0611 4.121L11.6864 4.77067C12.2238 5.08065 12.8454 5.2127 13.4624 5.1479L13.3841 4.402ZM12.0611 4.121L12.4379 3.4725C12.1762 3.32049 11.9694 3.08955 11.8471 2.81279L11.1611 3.116L10.4751 3.41921C10.7255 3.98569 11.1488 4.45836 11.6843 4.7695L12.0611 4.121ZM11.1611 3.116L11.8456 2.80936L11.3156 1.62636L10.6311 1.933L9.94666 2.23964L10.4767 3.42264L11.1611 3.116ZM10.6311 1.933L11.3166 1.62863C10.8768 0.638171 9.89471 -0.000178933 8.81099 5.96046e-08L8.81111 0.75L8.81124 1.5C9.30189 1.49992 9.74653 1.78893 9.94565 2.23737L10.6311 1.933ZM8.81111 0.75L8.81123 5.96046e-08C7.72752 -0.000176907 6.74545 0.638169 6.30565 1.62863L6.99111 1.933L7.67657 2.23737C7.8757 1.78893 8.32033 1.49992 8.81099 1.5L8.81111 0.75ZM6.99111 1.933L6.3058 1.62829L5.7798 2.81129L6.46511 3.116L7.15042 3.42071L7.67642 2.23771L6.99111 1.933ZM6.46511 3.116L5.77914 2.81279C5.6568 3.08955 5.44999 3.32049 5.18834 3.4725L5.56511 4.121L5.94188 4.7695C6.47741 4.45836 6.90069 3.98569 7.15109 3.41921L6.46511 3.116ZM5.56511 4.121L5.19036 3.47133C4.92715 3.62317 4.62265 3.68784 4.32045 3.6561L4.24211 4.402L4.16378 5.1479C4.78078 5.2127 5.40246 5.08065 5.93986 4.77067L5.56511 4.121ZM4.24211 4.402L4.32126 3.65619L3.03026 3.51919L2.95111 4.265L2.87197 5.01081L4.16297 5.14781L4.24211 4.402ZM2.95111 4.265L3.03 3.51916C1.95248 3.40519 0.908943 3.93666 0.367474 4.87521L1.01711 5.25L1.66675 5.62479C1.9119 5.19987 2.38437 4.95924 2.87222 5.01084L2.95111 4.265ZM1.01711 5.25L0.367781 4.87467C-0.174467 5.81279 -0.112939 6.98234 0.524745 7.85838L1.13111 7.417L1.73748 6.97562C1.44889 6.57916 1.42105 6.04987 1.66644 5.62533L1.01711 5.25ZM1.13111 7.417L0.52471 7.85834L1.28671 8.90534L1.89311 8.464L2.49951 8.02267L1.73751 6.97567L1.13111 7.417ZM1.89311 8.464L1.28652 8.90508C1.46504 9.15058 1.56117 9.44633 1.56111 9.74986L2.31111 9.75L3.06111 9.75014C3.06123 9.12953 2.86468 8.52485 2.4997 8.02292L1.89311 8.464ZM2.31111 9.75H1.56111C1.56111 10.0537 1.46484 10.3498 1.28637 10.5951L1.89288 11.0363L2.49938 11.4775C2.86454 10.9755 3.06111 10.3705 3.06111 9.75H2.31111ZM1.89288 11.0363L1.28648 10.595L0.52471 11.6417L1.13111 12.083L1.73751 12.5243L2.49928 11.4777L1.89288 11.0363ZM1.13111 12.083L0.524745 11.6416C-0.112939 12.5177 -0.174467 13.6872 0.367781 14.6253L1.01711 14.25L1.66644 13.8747C1.42105 13.4501 1.44889 12.9208 1.73748 12.5244L1.13111 12.083ZM1.01711 14.25L0.367719 14.6252C0.909548 15.563 1.95243 16.0941 3.02951 15.9809L2.95111 15.235L2.87271 14.4891C2.38462 14.5404 1.91204 14.2997 1.66651 13.8748L1.01711 14.25ZM2.95111 15.235L3.0305 15.9808L4.3175 15.8438L4.23811 15.098L4.15872 14.3522L2.87172 14.4892L2.95111 15.235ZM4.23811 15.098L4.31645 15.8439C4.61865 15.8122 4.92315 15.8768 5.18637 16.0287L5.56111 15.379L5.93586 14.7293C5.39846 14.4193 4.77678 14.2873 4.15978 14.3521L4.23811 15.098ZM5.56111 15.379L5.18619 16.0286C5.44882 16.1801 5.65659 16.4111 5.77961 16.6883L6.46511 16.384L7.15061 16.0797C6.89881 15.5125 6.47356 15.0397 5.93603 14.7294L5.56111 15.379ZM11.4581 9.75H10.7081C10.7081 10.7977 9.8588 11.647 8.81111 11.647V12.397V13.147C10.6872 13.147 12.2081 11.6261 12.2081 9.75H11.4581ZM8.81111 12.397V11.647C7.76343 11.647 6.91411 10.7977 6.91411 9.75H6.16411H5.41411C5.41411 11.6261 6.935 13.147 8.81111 13.147V12.397ZM6.16411 9.75H6.91411C6.91411 8.70231 7.76343 7.853 8.81111 7.853V7.103V6.353C6.935 6.353 5.41411 7.87389 5.41411 9.75H6.16411ZM8.81111 7.103V7.853C9.8588 7.853 10.7081 8.70231 10.7081 9.75H11.4581H12.2081C12.2081 7.87389 10.6872 6.353 8.81111 6.353V7.103Z"
+              fill="#101828"
+            />
+          </svg>
+          <div class="flex flex-1 items-center justify-between gap-3">
+            <h2 class="text-primary text-base font-semibold">General</h2>
+
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M19.9841 14.6859C19.9853 14.8959 19.945 15.1041 19.8656 15.2985C19.7862 15.493 19.6692 15.6698 19.5212 15.819C19.3729 15.9685 19.1964 16.0873 19.0019 16.1683C18.8074 16.2493 18.5988 16.291 18.3882 16.291C18.1775 16.291 17.9689 16.2493 17.7744 16.1683C17.58 16.0873 17.4034 15.9685 17.2551 15.819L12.0046 10.5366L6.72225 15.6115C6.42325 15.9087 6.01877 16.0756 5.59716 16.0756C5.17555 16.0756 4.77107 15.9087 4.47206 15.6115C4.32248 15.4631 4.20376 15.2866 4.12273 15.0922C4.04171 14.8977 4 14.6891 4 14.4784C4 14.2677 4.04171 14.0591 4.12273 13.8647C4.20376 13.6702 4.32248 13.4937 4.47206 13.3453L10.8556 7.18522C11.1539 6.89282 11.555 6.72903 11.9727 6.72903C12.3904 6.72903 12.7915 6.89282 13.0898 7.18522L19.4734 13.5688C19.6281 13.712 19.7528 13.8845 19.8405 14.0762C19.9281 14.268 19.9769 14.4752 19.9841 14.6859Z"
+                fill="#101828"
+              />
+            </svg>
+          </div>
+        </div>
+        <p class="text-secondary text-sm font-normal">
+          Manage essential product details like category, pricing, tax,
+          inventory, and unique identifiers.
+        </p>
+      </div>
+
+      <!-- Content -->
+      <div class="flex flex-col gap-5 px-3.5 py-4">
+        <!-- Product Name -->
+        <div class="flex flex-col gap-1">
+          <div>
+            <app-text-input
+              id="productName"
+              label="Product name"
+              [required]="true"
+              value="Strawberry cake"
+            />
+            <span class="text-secondary text-sm"
+              >Displayed on cash register</span
+            >
+          </div>
+
+          <app-radio-group
+            [options]="cashRegisterOptions"
+            selectedValue="same"
+          />
+        </div>
+
+        <!-- Product Details -->
+        <div class="flex flex-col gap-5">
+          <!-- Product Description -->
+          <app-textarea
+            id="productDescription"
+            label="Product description"
+            value="Strawberry Cake, crafted with soft vanilla sponge, layered with fresh strawberry filling, and topped with fluffy whipped cream and juicy strawberries. A perfect balance of sweetness and freshness, ideal for any celebration or a delightful treat!"
+          />
+
+          <!-- Category -->
+          <app-select
+            id="category"
+            label="Category"
+            [required]="true"
+            [tooltip]="true"
+            [options]="categoryOptions"
+          />
+
+          <!-- Price Row -->
+          <div class="grid grid-cols-2 gap-6">
+            <app-text-input
+              id="price"
+              label="Price"
+              type="number"
+              [required]="true"
+              [tooltip]="true"
+              value="125"
+              suffix="incl. VAT"
+            />
+            <app-text-input
+              id="takeAwayPrice"
+              label="Take away price"
+              type="number"
+              [tooltip]="true"
+              value="132"
+              suffix="incl. VAT"
+            />
+          </div>
+
+          <!-- Purchase Price & Unit Row -->
+          <div class="grid grid-cols-2 gap-6">
+            <app-text-input
+              id="purchasePrice"
+              label="Purchase price"
+              type="number"
+              [tooltip]="true"
+              value="0"
+              suffix="excl. VAT"
+            />
+            <app-select-with-toggle
+              id="unit"
+              label="Unit"
+              [tooltip]="true"
+              [options]="unitOptions"
+              [enabled]="false"
+            />
+          </div>
+
+          <!-- Tax Group Row -->
+          <div class="grid grid-cols-2 gap-6">
+            <app-select
+              id="taxGroupDineIn"
+              label="Tax group Dine in"
+              [tooltip]="true"
+              [options]="taxGroupOptions"
+            />
+            <app-select
+              id="taxGroupToGo"
+              label="Tax group To Go"
+              [tooltip]="true"
+              [options]="taxGroupToGoOptions"
+            />
+          </div>
+
+          <!-- SKU & Bar Code Row -->
+          <div class="grid grid-cols-2 gap-6">
+            <app-input-with-button
+              id="skuCode"
+              label="SKU code"
+              [tooltip]="true"
+              value="SB-8214155"
+              buttonLabel="New SKU code"
+            />
+            <app-input-with-button
+              id="barCode"
+              label="Bar code"
+              [tooltip]="true"
+              value="012421000045521"
+              buttonLabel="New bar code"
+            />
+          </div>
+
+          <!-- Price Settings -->
+          <div
+            class="border-border-primary bg-surface-primary shadow-card rounded-lg border"
+          >
+            <h3 class="text-primary px-4 py-3.5 text-base font-semibold">
+              Price settings
+            </h3>
+            <div class="flex flex-col gap-3 px-4 py-3.5">
+              <div class="flex flex-wrap gap-x-6 gap-y-3">
+                <app-checkbox
+                  id="customPrice"
+                  label="Custom price"
+                  [checked]="true"
+                  [tooltip]="true"
+                />
+                <app-checkbox
+                  id="quantityPrices"
+                  label="Quantity prices"
+                  [tooltip]="true"
+                />
+                <app-checkbox
+                  id="closedForDiscount"
+                  label="Closed for discount"
+                  [tooltip]="true"
+                />
+              </div>
+              <div class="flex flex-wrap gap-x-6 gap-y-3">
+                <app-checkbox
+                  id="externalReferenceField"
+                  label="External reference field"
+                  [tooltip]="true"
+                />
+                <app-checkbox
+                  id="requireExternalReferenceField"
+                  label="Require external reference filed"
+                  [disabled]="true"
+                  [tooltip]="true"
+                />
+              </div>
+            </div>
+          </div>
+
+          <!-- Product Tags -->
+          <div
+            class="border-border-primary bg-surface-primary shadow-card rounded-lg border"
+          >
+            <div class="flex flex-col gap-1.5 px-4 py-3.5">
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-primary text-base font-semibold">
+                  Product tags
+                </h3>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12.3535 15.3535C12.1583 15.5488 11.8417 15.5488 11.6465 15.3535L5.64648 9.35352C5.45125 9.15828 5.45125 8.84172 5.64648 8.64648C5.84172 8.45125 6.15828 8.45125 6.35352 8.64648L12 14.293L17.6465 8.64648C17.8418 8.45125 18.1582 8.45125 18.3535 8.64648C18.5488 8.84172 18.5488 9.15828 18.3535 9.35352L12.3535 15.3535Z"
+                    fill="#101828"
+                    stroke="#101828"
+                  />
+                </svg>
+              </div>
+              <p class="text-secondary text-sm">
+                Select tag groups to categorize this product. You can select
+                more than one tag.
+              </p>
+            </div>
+            <div class="px-4 py-4">
+              <button
+                type="button"
+                class="bg-surface-brand-secondary text-brand-primary flex w-full items-center justify-center gap-1.5 rounded-lg px-4 py-3 text-base font-medium"
+              >
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4.5 12H19.5M12 19.5V4.5"
+                    stroke="#0E9E73"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+
+                Add tag group
+              </button>
+            </div>
+          </div>
+
+          <!-- Product Filters -->
+          <div
+            class="border-border-primary bg-surface-primary shadow-card rounded-lg border"
+          >
+            <div class="flex flex-col gap-1.5 px-4 py-3.5">
+              <div class="flex items-center justify-between gap-2">
+                <h3 class="text-primary text-base font-semibold">
+                  Product filters
+                </h3>
+                <svg
+                  class="text-primary h-5 w-5"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m19.5 8.25-7.5 7.5-7.5-7.5"
+                  />
+                </svg>
+              </div>
+              <p class="text-secondary text-sm">
+                Enable or disable the filters where this product should appear.
+                Set a custom price in each selected filter if needed.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class GeneralSectionComponent {
+  cashRegisterOptions = [
+    {
+      value: 'same',
+      label: 'Use Product name as Official name and Printer name',
+    },
+    { value: 'different', label: 'Use different names', tooltip: true },
+  ];
+
+  categoryOptions = [
+    { value: 'cake', label: 'Cake' },
+    { value: 'pastry', label: 'Pastry' },
+    { value: 'bread', label: 'Bread' },
+    { value: 'beverage', label: 'Beverage' },
+  ];
+
+  unitOptions = [
+    { value: '', label: '' },
+    { value: 'piece', label: 'Piece' },
+    { value: 'kg', label: 'Kilogram' },
+    { value: 'liter', label: 'Liter' },
+  ];
+
+  taxGroupOptions = [
+    { value: '25', label: '25%' },
+    { value: '12', label: '12%' },
+    { value: '6', label: '6%' },
+    { value: '0', label: '0%' },
+  ];
+
+  taxGroupToGoOptions = [
+    { value: '15', label: '15%' },
+    { value: '12', label: '12%' },
+    { value: '6', label: '6%' },
+    { value: '0', label: '0%' },
+  ];
+}
