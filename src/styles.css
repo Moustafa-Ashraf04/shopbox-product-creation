@@ -1,3 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
 
 @import "tailwindcss";
+
+@theme {
+  --color-brand-primary: #0e9e73;
+  --color-border-brand: #0e9e73;
+  --color-text-primary: #101828;
+  --color-text-secondary: #475467;
+  --color-surface-primary: #ffffff;
+  --color-surface-secondary: #f9fafb;
+  --color-border-primary: #d0d5dd;
+  --color-border-secondary: #eaecf0;
+}
+
+body {
+  background-color: var(--color-surface-secondary);
+}
