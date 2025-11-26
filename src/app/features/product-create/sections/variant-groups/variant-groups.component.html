@@ -25,18 +25,22 @@
         <h2 class="text-primary text-base font-semibold">Variant groups</h2>
 
         <!-- Chevron Up -->
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M19.9841 14.6859C19.9853 14.8959 19.945 15.1041 19.8656 15.2985C19.7862 15.493 19.6692 15.6698 19.5212 15.819C19.3729 15.9685 19.1964 16.0873 19.0019 16.1683C18.8074 16.2493 18.5988 16.291 18.3882 16.291C18.1775 16.291 17.9689 16.2493 17.7744 16.1683C17.58 16.0873 17.4034 15.9685 17.2551 15.819L12.0046 10.5366L6.72225 15.6115C6.42325 15.9087 6.01877 16.0756 5.59716 16.0756C5.17555 16.0756 4.77107 15.9087 4.47206 15.6115C4.32248 15.4631 4.20376 15.2866 4.12273 15.0922C4.04171 14.8977 4 14.6891 4 14.4784C4 14.2677 4.04171 14.0591 4.12273 13.8647C4.20376 13.6702 4.32248 13.4937 4.47206 13.3453L10.8556 7.18522C11.1539 6.89282 11.555 6.72903 11.9727 6.72903C12.3904 6.72903 12.7915 6.89282 13.0898 7.18522L19.4734 13.5688C19.6281 13.712 19.7528 13.8845 19.8405 14.0762C19.9281 14.268 19.9769 14.4752 19.9841 14.6859Z"
-            fill="#101828"
-          />
-        </svg>
+        <button type="button" class="cursor-pointer" (click)="toggleSection()">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="transition-transform duration-200"
+            [class.rotate-180]="!isExpanded()"
+          >
+            <path
+              d="M19.9841 14.6859C19.9853 14.8959 19.945 15.1041 19.8656 15.2985C19.7862 15.493 19.6692 15.6698 19.5212 15.819C19.3729 15.9685 19.1964 16.0873 19.0019 16.1683C18.8074 16.2493 18.5988 16.291 18.3882 16.291C18.1775 16.291 17.9689 16.2493 17.7744 16.1683C17.58 16.0873 17.4034 15.9685 17.2551 15.819L12.0046 10.5366L6.72225 15.6115C6.42325 15.9087 6.01877 16.0756 5.59716 16.0756C5.17555 16.0756 4.77107 15.9087 4.47206 15.6115C4.32248 15.4631 4.20376 15.2866 4.12273 15.0922C4.04171 14.8977 4 14.6891 4 14.4784C4 14.2677 4.04171 14.0591 4.12273 13.8647C4.20376 13.6702 4.32248 13.4937 4.47206 13.3453L10.8556 7.18522C11.1539 6.89282 11.555 6.72903 11.9727 6.72903C12.3904 6.72903 12.7915 6.89282 13.0898 7.18522L19.4734 13.5688C19.6281 13.712 19.7528 13.8845 19.8405 14.0762C19.9281 14.268 19.9769 14.4752 19.9841 14.6859Z"
+              fill="#101828"
+            />
+          </svg>
+        </button>
       </div>
     </div>
     <p class="text-secondary text-sm font-normal">
@@ -47,54 +51,89 @@
   </div>
 
   <!-- Content -->
-  <div class="flex flex-col gap-4 px-6 py-3.5">
-    <!-- Inventory on Variants Toggle -->
-    <div class="flex flex-col gap-4">
-      <div class="flex flex-col gap-3.5">
-        <div class="flex items-center gap-3">
-          <button
-            type="button"
-            (click)="toggleInventoryOnVariants()"
-            class="border-border-primary relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 bg-white p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
-            role="switch"
-            [attr.aria-checked]="inventoryOnVariants()"
-          >
-            <span
-              aria-hidden="true"
-              class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition duration-200 ease-in-out"
-              [class.translate-x-5]="inventoryOnVariants()"
-              [class.translate-x-0]="!inventoryOnVariants()"
-              [class.bg-brand-primary]="inventoryOnVariants()"
-              [class.bg-neutral-secondary]="!inventoryOnVariants()"
-            ></span>
-          </button>
-          <span class="text-primary text-sm font-medium"
-            >Inventory on variants</span
-          >
-          <button
-            type="button"
-            class="cursor-help"
-            (click)="$event.preventDefault(); $event.stopPropagation()"
+  @if (isExpanded()) {
+    <div class="flex flex-col gap-4 px-6 py-3.5">
+      <!-- Inventory on Variants Toggle -->
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-col gap-3.5">
+          <div class="flex items-center gap-3">
+            <button
+              type="button"
+              (click)="toggleInventoryOnVariants()"
+              class="border-border-primary relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 bg-white p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
+              role="switch"
+              [attr.aria-checked]="inventoryOnVariants()"
+            >
+              <span
+                aria-hidden="true"
+                class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition duration-200 ease-in-out"
+                [class.translate-x-5]="inventoryOnVariants()"
+                [class.translate-x-0]="!inventoryOnVariants()"
+                [class.bg-brand-primary]="inventoryOnVariants()"
+                [class.bg-neutral-secondary]="!inventoryOnVariants()"
+              ></span>
+            </button>
+            <span class="text-primary text-sm font-medium"
+              >Inventory on variants</span
+            >
+            <button
+              type="button"
+              class="cursor-help"
+              (click)="$event.preventDefault(); $event.stopPropagation()"
+            >
+              <svg
+                width="15"
+                height="15"
+                viewBox="0 0 15 15"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M7.25 11V7.25H6.5M7.25 14C3.52175 14 0.5 10.9783 0.5 7.25C0.5 3.52175 3.52175 0.5 7.25 0.5C10.9783 0.5 14 3.52175 14 7.25C14 10.9783 10.9783 14 7.25 14ZM7.06175 4.25C6.95825 4.25 6.87425 4.334 6.875 4.4375C6.875 4.541 6.959 4.625 7.0625 4.625C7.166 4.625 7.25 4.541 7.25 4.4375C7.25 4.334 7.166 4.25 7.06175 4.25Z"
+                  stroke="#101828"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                />
+              </svg>
+            </button>
+          </div>
+          <!-- Info Message -->
+          <div
+            class="bg-surface-info-primary border-border-info flex items-center gap-2 rounded-lg border p-2"
           >
             <svg
-              width="15"
-              height="15"
-              viewBox="0 0 15 15"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M7.25 11V7.25H6.5M7.25 14C3.52175 14 0.5 10.9783 0.5 7.25C0.5 3.52175 3.52175 0.5 7.25 0.5C10.9783 0.5 14 3.52175 14 7.25C14 10.9783 10.9783 14 7.25 14ZM7.06175 4.25C6.95825 4.25 6.87425 4.334 6.875 4.4375C6.875 4.541 6.959 4.625 7.0625 4.625C7.166 4.625 7.25 4.541 7.25 4.4375C7.25 4.334 7.166 4.25 7.06175 4.25Z"
-                stroke="#101828"
-                stroke-linecap="round"
-                stroke-linejoin="round"
+                d="M12 2C10.0222 2 8.08879 2.58649 6.4443 3.6853C4.79981 4.78412 3.51809 6.3459 2.76121 8.17317C2.00433 10.0004 1.8063 12.0111 2.19215 13.9509C2.578 15.8907 3.53041 17.6725 4.92894 19.0711C6.32746 20.4696 8.10929 21.422 10.0491 21.8079C11.9889 22.1937 13.9996 21.9957 15.8268 21.2388C17.6541 20.4819 19.2159 19.2002 20.3147 17.5557C21.4135 15.9112 22 13.9778 22 12C22 10.6868 21.7413 9.38642 21.2388 8.17317C20.7363 6.95991 19.9997 5.85752 19.0711 4.92893C18.1425 4.00035 17.0401 3.26375 15.8268 2.7612C14.6136 2.25866 13.3132 2 12 2ZM12 20C10.4178 20 8.87104 19.5308 7.55544 18.6518C6.23985 17.7727 5.21447 16.5233 4.60897 15.0615C4.00347 13.5997 3.84504 11.9911 4.15372 10.4393C4.4624 8.88743 5.22433 7.46197 6.34315 6.34315C7.46197 5.22433 8.88743 4.4624 10.4393 4.15372C11.9911 3.84504 13.5997 4.00346 15.0615 4.60896C16.5233 5.21447 17.7727 6.23984 18.6518 7.55544C19.5308 8.87103 20 10.4177 20 12C20 14.1217 19.1572 16.1566 17.6569 17.6569C16.1566 19.1571 14.1217 20 12 20Z"
+                fill="#05205E"
+              />
+              <path
+                d="M12 9C12.5523 9 13 8.55228 13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8C11 8.55228 11.4477 9 12 9Z"
+                fill="#05205E"
+              />
+              <path
+                d="M12 10C11.7348 10 11.4804 10.1054 11.2929 10.2929C11.1054 10.4804 11 10.7348 11 11V16C11 16.2652 11.1054 16.5196 11.2929 16.7071C11.4804 16.8946 11.7348 17 12 17C12.2652 17 12.5196 16.8946 12.7071 16.7071C12.8946 16.5196 13 16.2652 13 16V11C13 10.7348 12.8946 10.4804 12.7071 10.2929C12.5196 10.1054 12.2652 10 12 10Z"
+                fill="#05205E"
               />
             </svg>
-          </button>
+
+            <p class="text-info-strong text-sm">
+              When "Inventory on variants" is on, each variant has its own
+              inventory. When off, variants deduct a portion from the main
+              product's stock
+            </p>
+          </div>
         </div>
-        <!-- Info Message -->
-        <div
-          class="bg-surface-info-primary border-border-info flex items-center gap-2 rounded-lg border p-2"
+        <!-- Add Variant Group Button -->
+        <button
+          type="button"
+          class="bg-surface-brand-secondary text-brand-primary flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-3 text-base font-semibold"
+          (click)="addVariantGroup()"
         >
           <svg
             width="24"
@@ -104,460 +143,436 @@
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              d="M12 2C10.0222 2 8.08879 2.58649 6.4443 3.6853C4.79981 4.78412 3.51809 6.3459 2.76121 8.17317C2.00433 10.0004 1.8063 12.0111 2.19215 13.9509C2.578 15.8907 3.53041 17.6725 4.92894 19.0711C6.32746 20.4696 8.10929 21.422 10.0491 21.8079C11.9889 22.1937 13.9996 21.9957 15.8268 21.2388C17.6541 20.4819 19.2159 19.2002 20.3147 17.5557C21.4135 15.9112 22 13.9778 22 12C22 10.6868 21.7413 9.38642 21.2388 8.17317C20.7363 6.95991 19.9997 5.85752 19.0711 4.92893C18.1425 4.00035 17.0401 3.26375 15.8268 2.7612C14.6136 2.25866 13.3132 2 12 2ZM12 20C10.4178 20 8.87104 19.5308 7.55544 18.6518C6.23985 17.7727 5.21447 16.5233 4.60897 15.0615C4.00347 13.5997 3.84504 11.9911 4.15372 10.4393C4.4624 8.88743 5.22433 7.46197 6.34315 6.34315C7.46197 5.22433 8.88743 4.4624 10.4393 4.15372C11.9911 3.84504 13.5997 4.00346 15.0615 4.60896C16.5233 5.21447 17.7727 6.23984 18.6518 7.55544C19.5308 8.87103 20 10.4177 20 12C20 14.1217 19.1572 16.1566 17.6569 17.6569C16.1566 19.1571 14.1217 20 12 20Z"
-              fill="#05205E"
-            />
-            <path
-              d="M12 9C12.5523 9 13 8.55228 13 8C13 7.44772 12.5523 7 12 7C11.4477 7 11 7.44772 11 8C11 8.55228 11.4477 9 12 9Z"
-              fill="#05205E"
-            />
-            <path
-              d="M12 10C11.7348 10 11.4804 10.1054 11.2929 10.2929C11.1054 10.4804 11 10.7348 11 11V16C11 16.2652 11.1054 16.5196 11.2929 16.7071C11.4804 16.8946 11.7348 17 12 17C12.2652 17 12.5196 16.8946 12.7071 16.7071C12.8946 16.5196 13 16.2652 13 16V11C13 10.7348 12.8946 10.4804 12.7071 10.2929C12.5196 10.1054 12.2652 10 12 10Z"
-              fill="#05205E"
+              d="M4.5 12H19.5M12 19.5V4.5"
+              stroke="#0E9E73"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
             />
           </svg>
-
-          <p class="text-info-strong text-sm">
-            When "Inventory on variants" is on, each variant has its own
-            inventory. When off, variants deduct a portion from the main
-            product's stock
-          </p>
-        </div>
+          Add variant group
+        </button>
       </div>
-      <!-- Add Variant Group Button -->
-      <button
-        type="button"
-        class="bg-surface-brand-secondary text-brand-primary flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-3 text-base font-semibold"
-        (click)="addVariantGroup()"
-      >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M4.5 12H19.5M12 19.5V4.5"
-            stroke="#0E9E73"
-            stroke-width="1.5"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-        Add variant group
-      </button>
-    </div>
 
-    <!-- Variant Groups List -->
-    <div class="space-y-4">
-      @for (group of variantGroups(); track group.id) {
-        <div
-          class="border-border-primary bg-surface-primary shadow-card space-y-4 rounded-lg border"
-        >
-          <!-- Group Header -->
-          <button
-            type="button"
-            class="border-bottom border-border-primary flex w-full cursor-pointer items-center justify-between gap-8 p-6"
-            (click)="toggleVariantGroup(group.id)"
+      <!-- Variant Groups List -->
+      <div class="space-y-4">
+        @for (group of variantGroups(); track group.id) {
+          <div
+            class="border-border-primary bg-surface-primary shadow-card space-y-4 rounded-lg border"
           >
-            <span class="text-primary text-base font-semibold">
-              {{ "{" }}{{ group.name1 }}{{ "}" }} / {{ "{" }}{{ group.name2
-              }}{{ "}" }}
-            </span>
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              class="transition-transform duration-200"
-              [class.rotate-180]="!group.expanded"
+            <!-- Group Header -->
+            <button
+              type="button"
+              class="border-bottom border-border-primary flex w-full cursor-pointer items-center justify-between gap-8 p-6"
+              (click)="toggleVariantGroup(group.id)"
             >
-              <path
-                d="M11.6465 8.64648C11.8417 8.45124 12.1583 8.45124 12.3535 8.64648L18.3535 14.6465C18.5488 14.8417 18.5488 15.1583 18.3535 15.3535C18.1583 15.5488 17.8417 15.5488 17.6465 15.3535L12 9.70703L6.35352 15.3535C6.15825 15.5487 5.84175 15.5487 5.64648 15.3535C5.45124 15.1583 5.45124 14.8417 5.64648 14.6465L11.6465 8.64648Z"
-                fill="#101828"
-                stroke="#101828"
-              />
-            </svg>
-          </button>
-
-          <!-- Group Content (shown when expanded) -->
-          @if (group.expanded) {
-            <div
-              class="border-border-secondary flex flex-col gap-4 border-t px-6 py-4"
-            >
-              <div class="space-y-6">
-                <!-- Create New Variants Button -->
-                <button
-                  type="button"
-                  class="bg-surface-primary border-border-primary shadow-card text-brand-primary flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-dashed px-4 py-3 text-base font-semibold"
-                >
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M8 9.10461V6.00335C8.00001 5.82877 8.04573 5.65724 8.1326 5.50581C8.21947 5.35438 8.34447 5.22834 8.49517 5.1402C8.64587 5.05207 8.81701 5.00493 8.99158 5.00346C9.16616 5.00199 9.33807 5.04625 9.49023 5.13183L15.2354 8.36348C15.4674 8.49397 15.6605 8.68383 15.7948 8.91357C15.9292 9.14332 16 9.40468 16 9.67083V18.0005C16 18.1751 15.9543 18.3466 15.8674 18.498C15.7806 18.6495 15.6556 18.7755 15.5049 18.8637C15.3542 18.9518 15.183 18.999 15.0084 19.0004C14.8339 19.0019 14.6619 18.9576 14.5098 18.8721L11 16.8978M13 7.10607V4.00194C13 3.82736 13.0457 3.65582 13.1326 3.50438C13.2194 3.35294 13.3444 3.22689 13.4951 3.13875C13.6458 3.05061 13.817 3.00346 13.9916 3.00199C14.1661 3.00052 14.3381 3.04477 14.4902 3.13036L20.2354 6.36199C20.4674 6.49248 20.6605 6.68234 20.7948 6.91209C20.9292 7.14184 21 7.4032 21 7.66936V15.999C21 16.1736 20.9543 16.3451 20.8674 16.4966C20.7806 16.648 20.6556 16.7741 20.5049 16.8622C20.3542 16.9503 20.183 16.9975 20.0084 16.999C19.8339 17.0004 19.6619 16.9562 19.5098 16.8706L16 14.8963M11 19.999V11.6694C11 11.4032 10.9292 11.1418 10.7948 10.9121C10.6604 10.6823 10.4674 10.4925 10.2354 10.362L4.49026 7.13036C4.33809 7.04477 4.16617 7.0005 3.99159 7.00197C3.81701 7.00344 3.64586 7.05059 3.49515 7.13873C3.34445 7.22687 3.21944 7.35293 3.13258 7.50437C3.04571 7.65581 3 7.82735 3 8.00194V16.3316C3 16.5978 3.07082 16.8591 3.20519 17.0889C3.33956 17.3186 3.53263 17.5085 3.76461 17.639L9.50974 20.8706C9.66191 20.9562 9.83383 21.0005 10.0084 20.999C10.183 20.9975 10.3541 20.9504 10.5048 20.8622C10.6556 20.7741 10.7806 20.648 10.8674 20.4966C10.9543 20.3452 11 20.1736 11 19.999Z"
-                      stroke="#0e9e73"
-                      stroke-width="1.5"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                  Create new variants
-                </button>
-
-                <!-- Set Default Variant -->
-                <app-select
-                  id="defaultVariant-{{ group.id }}"
-                  label="Set default variant"
-                  [tooltip]="true"
-                  [options]="defaultVariantOptions()"
+              <span class="text-primary text-base font-semibold">
+                {{ "{" }}{{ group.name1 }}{{ "}" }} / {{ "{" }}{{ group.name2
+                }}{{ "}" }}
+              </span>
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+                class="transition-transform duration-200"
+                [class.rotate-180]="!group.expanded"
+              >
+                <path
+                  d="M11.6465 8.64648C11.8417 8.45124 12.1583 8.45124 12.3535 8.64648L18.3535 14.6465C18.5488 14.8417 18.5488 15.1583 18.3535 15.3535C18.1583 15.5488 17.8417 15.5488 17.6465 15.3535L12 9.70703L6.35352 15.3535C6.15825 15.5487 5.84175 15.5487 5.64648 15.3535C5.45124 15.1583 5.45124 14.8417 5.64648 14.6465L11.6465 8.64648Z"
+                  fill="#101828"
+                  stroke="#101828"
                 />
-              </div>
+              </svg>
+            </button>
 
-              <!-- Variants List -->
-              <div class="space-y-4">
-                @for (variant of group.variants; track variant.id) {
-                  <div
-                    class="border-border-primary rounded-lg border shadow-sm"
+            <!-- Group Content (shown when expanded) -->
+            @if (group.expanded) {
+              <div
+                class="border-border-secondary flex flex-col gap-4 border-t px-6 py-4"
+              >
+                <div class="space-y-6">
+                  <!-- Create New Variants Button -->
+                  <button
+                    type="button"
+                    class="bg-surface-primary border-border-primary shadow-card text-brand-primary flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-dashed px-4 py-3 text-base font-semibold"
                   >
-                    <!-- Variant Header -->
-                    <div
-                      class="border-border-secondary flex items-center justify-between gap-2 border-b p-4"
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <button
-                        type="button"
-                        class="flex flex-1 cursor-pointer items-center gap-2"
-                        (click)="toggleVariant(group.id, variant.id)"
-                        [class.opacity-50]="!variant.enabled"
+                      <path
+                        d="M8 9.10461V6.00335C8.00001 5.82877 8.04573 5.65724 8.1326 5.50581C8.21947 5.35438 8.34447 5.22834 8.49517 5.1402C8.64587 5.05207 8.81701 5.00493 8.99158 5.00346C9.16616 5.00199 9.33807 5.04625 9.49023 5.13183L15.2354 8.36348C15.4674 8.49397 15.6605 8.68383 15.7948 8.91357C15.9292 9.14332 16 9.40468 16 9.67083V18.0005C16 18.1751 15.9543 18.3466 15.8674 18.498C15.7806 18.6495 15.6556 18.7755 15.5049 18.8637C15.3542 18.9518 15.183 18.999 15.0084 19.0004C14.8339 19.0019 14.6619 18.9576 14.5098 18.8721L11 16.8978M13 7.10607V4.00194C13 3.82736 13.0457 3.65582 13.1326 3.50438C13.2194 3.35294 13.3444 3.22689 13.4951 3.13875C13.6458 3.05061 13.817 3.00346 13.9916 3.00199C14.1661 3.00052 14.3381 3.04477 14.4902 3.13036L20.2354 6.36199C20.4674 6.49248 20.6605 6.68234 20.7948 6.91209C20.9292 7.14184 21 7.4032 21 7.66936V15.999C21 16.1736 20.9543 16.3451 20.8674 16.4966C20.7806 16.648 20.6556 16.7741 20.5049 16.8622C20.3542 16.9503 20.183 16.9975 20.0084 16.999C19.8339 17.0004 19.6619 16.9562 19.5098 16.8706L16 14.8963M11 19.999V11.6694C11 11.4032 10.9292 11.1418 10.7948 10.9121C10.6604 10.6823 10.4674 10.4925 10.2354 10.362L4.49026 7.13036C4.33809 7.04477 4.16617 7.0005 3.99159 7.00197C3.81701 7.00344 3.64586 7.05059 3.49515 7.13873C3.34445 7.22687 3.21944 7.35293 3.13258 7.50437C3.04571 7.65581 3 7.82735 3 8.00194V16.3316C3 16.5978 3.07082 16.8591 3.20519 17.0889C3.33956 17.3186 3.53263 17.5085 3.76461 17.639L9.50974 20.8706C9.66191 20.9562 9.83383 21.0005 10.0084 20.999C10.183 20.9975 10.3541 20.9504 10.5048 20.8622C10.6556 20.7741 10.7806 20.648 10.8674 20.4966C10.9543 20.3452 11 20.1736 11 19.999Z"
+                        stroke="#0e9e73"
+                        stroke-width="1.5"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    Create new variants
+                  </button>
+
+                  <!-- Set Default Variant -->
+                  <app-select
+                    id="defaultVariant-{{ group.id }}"
+                    label="Set default variant"
+                    [tooltip]="true"
+                    [options]="defaultVariantOptions()"
+                  />
+                </div>
+
+                <!-- Variants List -->
+                <div class="space-y-4">
+                  @for (variant of group.variants; track variant.id) {
+                    <div
+                      class="border-border-primary rounded-lg border shadow-sm"
+                    >
+                      <!-- Variant Header -->
+                      <div
+                        class="border-border-secondary flex items-center justify-between gap-2 border-b p-4"
                       >
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                          class="transition-transform duration-200"
-                          [class.rotate-180]="!variant.expanded"
+                        <button
+                          type="button"
+                          class="flex flex-1 cursor-pointer items-center gap-2"
+                          (click)="toggleVariant(group.id, variant.id)"
+                          [class.opacity-50]="!variant.enabled"
                         >
-                          <path
-                            d="M11.6465 8.64648C11.8417 8.45124 12.1583 8.45124 12.3535 8.64648L18.3535 14.6465C18.5488 14.8417 18.5488 15.1583 18.3535 15.3535C18.1583 15.5488 17.8417 15.5488 17.6465 15.3535L12 9.70703L6.35352 15.3535C6.15825 15.5487 5.84175 15.5487 5.64648 15.3535C5.45124 15.1583 5.45124 14.8417 5.64648 14.6465L11.6465 8.64648Z"
-                            fill="#101828"
-                            stroke="#101828"
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                            class="transition-transform duration-200"
+                            [class.rotate-180]="!variant.expanded"
+                          >
+                            <path
+                              d="M11.6465 8.64648C11.8417 8.45124 12.1583 8.45124 12.3535 8.64648L18.3535 14.6465C18.5488 14.8417 18.5488 15.1583 18.3535 15.3535C18.1583 15.5488 17.8417 15.5488 17.6465 15.3535L12 9.70703L6.35352 15.3535C6.15825 15.5487 5.84175 15.5487 5.64648 15.3535C5.45124 15.1583 5.45124 14.8417 5.64648 14.6465L11.6465 8.64648Z"
+                              fill="#101828"
+                              stroke="#101828"
+                            />
+                          </svg>
+                          <span class="text-primary text-sm font-semibold">
+                            {{ "{" }}{{ variant.name1 }}{{ "}" }} / {{ "{"
+                            }}{{ variant.name2 }}{{ "}" }}
+                          </span>
+                        </button>
+
+                        <!-- Variant Actions -->
+                        <div class="flex items-center gap-2">
+                          <!-- Enable/Disable Toggle -->
+                          <button
+                            type="button"
+                            (click)="toggleVariantEnabled(group.id, variant.id)"
+                            class="border-border-primary bg-surface-primary relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full border-2 p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
+                            role="switch"
+                            [attr.aria-checked]="variant.enabled"
+                          >
+                            <span
+                              aria-hidden="true"
+                              class="pointer-events-none inline-block h-4 w-4 transform rounded-full shadow-sm transition duration-200 ease-in-out"
+                              [class.translate-x-4]="variant.enabled"
+                              [class.translate-x-0]="!variant.enabled"
+                              [class.bg-brand-primary]="variant.enabled"
+                              [class.bg-neutral-secondary]="!variant.enabled"
+                            ></span>
+                          </button>
+
+                          <!-- Delete Button -->
+                          <button
+                            type="button"
+                            class="cursor-pointer"
+                            (click)="removeVariant(group.id, variant.id)"
+                          >
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M20 6.375H4M13.969 10.875V16.5M10.031 10.875V16.5M15.5414 21H8.45857C7.89171 21 7.34573 20.786 6.92981 20.4009C6.51389 20.0157 6.25868 19.4878 6.2152 18.9226L5.25 6.375H18.75L17.7848 18.9226C17.7413 19.4878 17.4861 20.0157 17.0702 20.4009C16.6543 20.786 16.1083 21 15.5414 21ZM9.1875 3H14.8125C15.1109 3 15.397 3.11853 15.608 3.3295C15.819 3.54048 15.9375 3.82663 15.9375 4.125V6.375H8.0625V4.125C8.0625 3.82663 8.18103 3.54048 8.392 3.3295C8.60298 3.11853 8.88913 3 9.1875 3Z"
+                                stroke="#F04438"
+                                stroke-width="1.5"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                              />
+                            </svg>
+                          </button>
+
+                          <!-- Reorder Button -->
+                          <button type="button" class="cursor-pointer">
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M4.5 12.375C4.5 11.9608 4.83579 11.625 5.25 11.625H18.75C19.1642 11.625 19.5 11.9608 19.5 12.375C19.5 12.7892 19.1642 13.125 18.75 13.125H5.25C4.83579 13.125 4.5 12.7892 4.5 12.375Z"
+                                fill="#101828"
+                              />
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M4.5 8.25C4.5 7.83579 4.83579 7.5 5.25 7.5H18.75C19.1642 7.5 19.5 7.83579 19.5 8.25C19.5 8.66421 19.1642 9 18.75 9H5.25C4.83579 9 4.5 8.66421 4.5 8.25Z"
+                                fill="#101828"
+                              />
+                              <path
+                                fill-rule="evenodd"
+                                clip-rule="evenodd"
+                                d="M4.5 16.5C4.5 16.0858 4.83579 15.75 5.25 15.75H18.75C19.1642 15.75 19.5 16.0858 19.5 16.5C19.5 16.9142 19.1642 17.25 18.75 17.25H5.25C4.83579 17.25 4.5 16.9142 4.5 16.5Z"
+                                fill="#101828"
+                              />
+                              <path
+                                d="M9.05438 19.8861L9.08812 19.919L11.6381 22.3656C11.7244 22.4484 11.8538 22.5 11.9981 22.5C12.1425 22.5 12.2719 22.4468 12.3581 22.3656L14.9062 19.9237L14.9494 19.883C14.9812 19.8439 15 19.797 15 19.747C15 19.611 14.8612 19.5 14.6888 19.5H9.31125C9.13875 19.5 9 19.611 9 19.747C9 19.7986 9.02063 19.8471 9.05438 19.8861Z"
+                                fill="#101828"
+                              />
+                              <path
+                                d="M14.9456 4.86386L14.9119 4.83103L12.3619 2.38445C12.2756 2.30159 12.1463 2.25 12.0019 2.25C11.8575 2.25 11.7281 2.30315 11.6419 2.38445L9.09375 4.82634L9.05062 4.86699C9.01875 4.90607 9 4.95297 9 5.003C9 5.139 9.13875 5.25 9.31125 5.25L14.6888 5.25C14.8612 5.25 15 5.139 15 5.003C15 4.95141 14.9794 4.90294 14.9456 4.86386Z"
+                                fill="#101828"
+                              />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+
+                      <!-- Tooltip for disabled variant -->
+                      @if (!variant.enabled) {
+                        <div class="px-3 py-2">
+                          <p class="text-secondary text-xs">
+                            Enable / Disable variant combinations for the
+                            Product
+                          </p>
+                        </div>
+                      }
+
+                      <!-- Variant Content (shown when expanded and enabled) -->
+                      @if (variant.expanded && variant.enabled) {
+                        <div
+                          class="bg-surface-secondary flex flex-col gap-5 p-6"
+                        >
+                          <!-- Product Variant ID & Integration ID -->
+                          <div
+                            class="flex flex-wrap items-center gap-4 text-sm"
+                          >
+                            <div class="flex items-center gap-1.5">
+                              <span class="text-primary"
+                                >Product variant ID:</span
+                              >
+                              <span class="text-primary">{{
+                                variant.productVariantId
+                              }}</span>
+                              <button type="button" class="cursor-pointer">
+                                <svg
+                                  width="20"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M6.56557 3.23223C7.03441 2.76339 7.67029 2.5 8.33333 2.5H15C15.663 2.5 16.2989 2.76339 16.7678 3.23223C17.2366 3.70107 17.5 4.33696 17.5 5V11.6667C17.5 12.3297 17.2366 12.9656 16.7678 13.4344M2.5 8.42592V14.9074C2.5 15.595 2.77315 16.2544 3.25935 16.7406C3.74556 17.2269 4.40499 17.5 5.09259 17.5H11.5741C12.2617 17.5 12.9211 17.2269 13.4073 16.7406C13.8935 16.2544 14.1667 15.595 14.1667 14.9074V8.42592C14.1667 7.73833 13.8935 7.07889 13.4073 6.59269C12.9211 6.10648 12.2617 5.83333 11.5741 5.83333H5.09259C4.40499 5.83333 3.74556 6.10648 3.25935 6.59269C2.77315 7.07889 2.5 7.73833 2.5 8.42592Z"
+                                    stroke="#667085"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                              <span class="text-primary">Integration ID:</span>
+                              <span class="text-primary">{{
+                                variant.integrationId
+                              }}</span>
+                              <button type="button" class="cursor-pointer">
+                                <svg
+                                  width="20"
+                                  height="20"
+                                  viewBox="0 0 20 20"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M6.56557 3.23223C7.03441 2.76339 7.67029 2.5 8.33333 2.5H15C15.663 2.5 16.2989 2.76339 16.7678 3.23223C17.2366 3.70107 17.5 4.33696 17.5 5V11.6667C17.5 12.3297 17.2366 12.9656 16.7678 13.4344M2.5 8.42592V14.9074C2.5 15.595 2.77315 16.2544 3.25935 16.7406C3.74556 17.2269 4.40499 17.5 5.09259 17.5H11.5741C12.2617 17.5 12.9211 17.2269 13.4073 16.7406C13.8935 16.2544 14.1667 15.595 14.1667 14.9074V8.42592C14.1667 7.73833 13.8935 7.07889 13.4073 6.59269C12.9211 6.10648 12.2617 5.83333 11.5741 5.83333H5.09259C4.40499 5.83333 3.74556 6.10648 3.25935 6.59269C2.77315 7.07889 2.5 7.73833 2.5 8.42592Z"
+                                    stroke="#667085"
+                                    stroke-width="1.5"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+
+                          <!-- Add Unique Variant Price Toggle -->
+                          <div class="flex items-center gap-3.5">
+                            <button
+                              type="button"
+                              (click)="
+                                toggleAddUniquePrice(group.id, variant.id)
+                              "
+                              class="border-border-primary relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 bg-white p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
+                              role="switch"
+                              [attr.aria-checked]="variant.addUniquePrice"
+                            >
+                              <span
+                                aria-hidden="true"
+                                class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition duration-200 ease-in-out"
+                                [class.translate-x-5]="variant.addUniquePrice"
+                                [class.translate-x-0]="!variant.addUniquePrice"
+                                [class.bg-brand-primary]="
+                                  variant.addUniquePrice
+                                "
+                                [class.bg-neutral-secondary]="
+                                  !variant.addUniquePrice
+                                "
+                              ></span>
+                            </button>
+                            <div class="flex items-center gap-2">
+                              <span class="text-primary text-sm"
+                                >Add unique variant price</span
+                              >
+
+                              <button
+                                type="button"
+                                class="cursor-help"
+                                (click)="
+                                  $event.preventDefault();
+                                  $event.stopPropagation()
+                                "
+                              >
+                                <svg
+                                  width="15"
+                                  height="15"
+                                  viewBox="0 0 15 15"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M7.25 11V7.25H6.5M7.25 14C3.52175 14 0.5 10.9783 0.5 7.25C0.5 3.52175 3.52175 0.5 7.25 0.5C10.9783 0.5 14 3.52175 14 7.25C14 10.9783 10.9783 14 7.25 14ZM7.06175 4.25C6.95825 4.25 6.87425 4.334 6.875 4.4375C6.875 4.541 6.959 4.625 7.0625 4.625C7.166 4.625 7.25 4.541 7.25 4.4375C7.25 4.334 7.166 4.25 7.06175 4.25Z"
+                                    stroke="#101828"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+
+                          <!-- Custom Price Toggle -->
+
+                          <div class="flex items-center gap-3.5">
+                            <button
+                              type="button"
+                              (click)="toggleCustomPrice(group.id, variant.id)"
+                              class="border-border-primary relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 bg-white p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
+                              role="switch"
+                              [attr.aria-checked]="variant.customPrice"
+                            >
+                              <span
+                                aria-hidden="true"
+                                class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition duration-200 ease-in-out"
+                                [class.translate-x-5]="variant.customPrice"
+                                [class.translate-x-0]="!variant.customPrice"
+                                [class.bg-brand-primary]="variant.customPrice"
+                                [class.bg-neutral-secondary]="
+                                  !variant.customPrice
+                                "
+                              ></span>
+                            </button>
+                            <div class="flex items-center gap-2">
+                              <span class="text-primary text-sm"
+                                >Custom price</span
+                              >
+                              <button
+                                type="button"
+                                class="cursor-help"
+                                (click)="
+                                  $event.preventDefault();
+                                  $event.stopPropagation()
+                                "
+                              >
+                                <svg
+                                  width="15"
+                                  height="15"
+                                  viewBox="0 0 15 15"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                >
+                                  <path
+                                    d="M7.25 11V7.25H6.5M7.25 14C3.52175 14 0.5 10.9783 0.5 7.25C0.5 3.52175 3.52175 0.5 7.25 0.5C10.9783 0.5 14 3.52175 14 7.25C14 10.9783 10.9783 14 7.25 14ZM7.06175 4.25C6.95825 4.25 6.87425 4.334 6.875 4.4375C6.875 4.541 6.959 4.625 7.0625 4.625C7.166 4.625 7.25 4.541 7.25 4.4375C7.25 4.334 7.166 4.25 7.06175 4.25Z"
+                                    stroke="#101828"
+                                    stroke-linecap="round"
+                                    stroke-linejoin="round"
+                                  />
+                                </svg>
+                              </button>
+                            </div>
+                          </div>
+
+                          <!-- Price Fields (shown when addUniquePrice is true) -->
+                          @if (variant.addUniquePrice) {
+                            <div class="grid grid-cols-3 gap-6">
+                              <app-text-input
+                                id="variantPrice-{{ variant.id }}"
+                                label="Variant price"
+                                type="number"
+                                [value]="variant.variantPrice"
+                                suffix="kr"
+                              />
+                              <app-text-input
+                                id="purchasePrice-{{ variant.id }}"
+                                label="Purchase price"
+                                type="number"
+                                [value]="variant.purchasePrice"
+                                suffix="kr"
+                              />
+                              <app-text-input
+                                id="takeAwayPrice-{{ variant.id }}"
+                                label="Take away price"
+                                type="number"
+                                [value]="variant.takeAwayPrice"
+                                suffix="kr"
+                              />
+                            </div>
+                          }
+
+                          <!-- SKU & Bar Code -->
+                          <app-input-with-button
+                            id="skuCode-{{ variant.id }}"
+                            label="SKU code"
+                            [tooltip]="true"
+                            [value]="variant.skuCode"
+                            buttonLabel="Generate new SKU code"
                           />
-                        </svg>
-                        <span class="text-primary text-sm font-semibold">
-                          {{ "{" }}{{ variant.name1 }}{{ "}" }} / {{ "{"
-                          }}{{ variant.name2 }}{{ "}" }}
-                        </span>
-                      </button>
 
-                      <!-- Variant Actions -->
-                      <div class="flex items-center gap-2">
-                        <!-- Enable/Disable Toggle -->
-                        <button
-                          type="button"
-                          (click)="toggleVariantEnabled(group.id, variant.id)"
-                          class="border-border-primary bg-surface-primary relative inline-flex h-6 w-10 shrink-0 cursor-pointer items-center rounded-full border-2 p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
-                          role="switch"
-                          [attr.aria-checked]="variant.enabled"
-                        >
-                          <span
-                            aria-hidden="true"
-                            class="pointer-events-none inline-block h-4 w-4 transform rounded-full shadow-sm transition duration-200 ease-in-out"
-                            [class.translate-x-4]="variant.enabled"
-                            [class.translate-x-0]="!variant.enabled"
-                            [class.bg-brand-primary]="variant.enabled"
-                            [class.bg-neutral-secondary]="!variant.enabled"
-                          ></span>
-                        </button>
-
-                        <!-- Delete Button -->
-                        <button
-                          type="button"
-                          class="cursor-pointer"
-                          (click)="removeVariant(group.id, variant.id)"
-                        >
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M20 6.375H4M13.969 10.875V16.5M10.031 10.875V16.5M15.5414 21H8.45857C7.89171 21 7.34573 20.786 6.92981 20.4009C6.51389 20.0157 6.25868 19.4878 6.2152 18.9226L5.25 6.375H18.75L17.7848 18.9226C17.7413 19.4878 17.4861 20.0157 17.0702 20.4009C16.6543 20.786 16.1083 21 15.5414 21ZM9.1875 3H14.8125C15.1109 3 15.397 3.11853 15.608 3.3295C15.819 3.54048 15.9375 3.82663 15.9375 4.125V6.375H8.0625V4.125C8.0625 3.82663 8.18103 3.54048 8.392 3.3295C8.60298 3.11853 8.88913 3 9.1875 3Z"
-                              stroke="#F04438"
-                              stroke-width="1.5"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                            />
-                          </svg>
-                        </button>
-
-                        <!-- Reorder Button -->
-                        <button type="button" class="cursor-pointer">
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              fill-rule="evenodd"
-                              clip-rule="evenodd"
-                              d="M4.5 12.375C4.5 11.9608 4.83579 11.625 5.25 11.625H18.75C19.1642 11.625 19.5 11.9608 19.5 12.375C19.5 12.7892 19.1642 13.125 18.75 13.125H5.25C4.83579 13.125 4.5 12.7892 4.5 12.375Z"
-                              fill="#101828"
-                            />
-                            <path
-                              fill-rule="evenodd"
-                              clip-rule="evenodd"
-                              d="M4.5 8.25C4.5 7.83579 4.83579 7.5 5.25 7.5H18.75C19.1642 7.5 19.5 7.83579 19.5 8.25C19.5 8.66421 19.1642 9 18.75 9H5.25C4.83579 9 4.5 8.66421 4.5 8.25Z"
-                              fill="#101828"
-                            />
-                            <path
-                              fill-rule="evenodd"
-                              clip-rule="evenodd"
-                              d="M4.5 16.5C4.5 16.0858 4.83579 15.75 5.25 15.75H18.75C19.1642 15.75 19.5 16.0858 19.5 16.5C19.5 16.9142 19.1642 17.25 18.75 17.25H5.25C4.83579 17.25 4.5 16.9142 4.5 16.5Z"
-                              fill="#101828"
-                            />
-                            <path
-                              d="M9.05438 19.8861L9.08812 19.919L11.6381 22.3656C11.7244 22.4484 11.8538 22.5 11.9981 22.5C12.1425 22.5 12.2719 22.4468 12.3581 22.3656L14.9062 19.9237L14.9494 19.883C14.9812 19.8439 15 19.797 15 19.747C15 19.611 14.8612 19.5 14.6888 19.5H9.31125C9.13875 19.5 9 19.611 9 19.747C9 19.7986 9.02063 19.8471 9.05438 19.8861Z"
-                              fill="#101828"
-                            />
-                            <path
-                              d="M14.9456 4.86386L14.9119 4.83103L12.3619 2.38445C12.2756 2.30159 12.1463 2.25 12.0019 2.25C11.8575 2.25 11.7281 2.30315 11.6419 2.38445L9.09375 4.82634L9.05062 4.86699C9.01875 4.90607 9 4.95297 9 5.003C9 5.139 9.13875 5.25 9.31125 5.25L14.6888 5.25C14.8612 5.25 15 5.139 15 5.003C15 4.95141 14.9794 4.90294 14.9456 4.86386Z"
-                              fill="#101828"
-                            />
-                          </svg>
-                        </button>
-                      </div>
+                          <app-input-with-button
+                            id="barCode-{{ variant.id }}"
+                            label="Bar code"
+                            [tooltip]="true"
+                            [value]="variant.barCode"
+                            buttonLabel="Generate new bar code"
+                          />
+                        </div>
+                      }
                     </div>
-
-                    <!-- Tooltip for disabled variant -->
-                    @if (!variant.enabled) {
-                      <div class="px-3 py-2">
-                        <p class="text-secondary text-xs">
-                          Enable / Disable variant combinations for the Product
-                        </p>
-                      </div>
-                    }
-
-                    <!-- Variant Content (shown when expanded and enabled) -->
-                    @if (variant.expanded && variant.enabled) {
-                      <div class="bg-surface-secondary flex flex-col gap-5 p-6">
-                        <!-- Product Variant ID & Integration ID -->
-                        <div class="flex flex-wrap items-center gap-4 text-sm">
-                          <div class="flex items-center gap-1.5">
-                            <span class="text-primary"
-                              >Product variant ID:</span
-                            >
-                            <span class="text-primary">{{
-                              variant.productVariantId
-                            }}</span>
-                            <button type="button" class="cursor-pointer">
-                              <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 20 20"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M6.56557 3.23223C7.03441 2.76339 7.67029 2.5 8.33333 2.5H15C15.663 2.5 16.2989 2.76339 16.7678 3.23223C17.2366 3.70107 17.5 4.33696 17.5 5V11.6667C17.5 12.3297 17.2366 12.9656 16.7678 13.4344M2.5 8.42592V14.9074C2.5 15.595 2.77315 16.2544 3.25935 16.7406C3.74556 17.2269 4.40499 17.5 5.09259 17.5H11.5741C12.2617 17.5 12.9211 17.2269 13.4073 16.7406C13.8935 16.2544 14.1667 15.595 14.1667 14.9074V8.42592C14.1667 7.73833 13.8935 7.07889 13.4073 6.59269C12.9211 6.10648 12.2617 5.83333 11.5741 5.83333H5.09259C4.40499 5.83333 3.74556 6.10648 3.25935 6.59269C2.77315 7.07889 2.5 7.73833 2.5 8.42592Z"
-                                  stroke="#667085"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                          <div class="flex items-center gap-1.5">
-                            <span class="text-primary">Integration ID:</span>
-                            <span class="text-primary">{{
-                              variant.integrationId
-                            }}</span>
-                            <button type="button" class="cursor-pointer">
-                              <svg
-                                width="20"
-                                height="20"
-                                viewBox="0 0 20 20"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M6.56557 3.23223C7.03441 2.76339 7.67029 2.5 8.33333 2.5H15C15.663 2.5 16.2989 2.76339 16.7678 3.23223C17.2366 3.70107 17.5 4.33696 17.5 5V11.6667C17.5 12.3297 17.2366 12.9656 16.7678 13.4344M2.5 8.42592V14.9074C2.5 15.595 2.77315 16.2544 3.25935 16.7406C3.74556 17.2269 4.40499 17.5 5.09259 17.5H11.5741C12.2617 17.5 12.9211 17.2269 13.4073 16.7406C13.8935 16.2544 14.1667 15.595 14.1667 14.9074V8.42592C14.1667 7.73833 13.8935 7.07889 13.4073 6.59269C12.9211 6.10648 12.2617 5.83333 11.5741 5.83333H5.09259C4.40499 5.83333 3.74556 6.10648 3.25935 6.59269C2.77315 7.07889 2.5 7.73833 2.5 8.42592Z"
-                                  stroke="#667085"
-                                  stroke-width="1.5"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-
-                        <!-- Add Unique Variant Price Toggle -->
-                        <div class="flex items-center gap-3.5">
-                          <button
-                            type="button"
-                            (click)="toggleAddUniquePrice(group.id, variant.id)"
-                            class="border-border-primary relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 bg-white p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
-                            role="switch"
-                            [attr.aria-checked]="variant.addUniquePrice"
-                          >
-                            <span
-                              aria-hidden="true"
-                              class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition duration-200 ease-in-out"
-                              [class.translate-x-5]="variant.addUniquePrice"
-                              [class.translate-x-0]="!variant.addUniquePrice"
-                              [class.bg-brand-primary]="variant.addUniquePrice"
-                              [class.bg-neutral-secondary]="
-                                !variant.addUniquePrice
-                              "
-                            ></span>
-                          </button>
-                          <div class="flex items-center gap-2">
-                            <span class="text-primary text-sm"
-                              >Add unique variant price</span
-                            >
-
-                            <button
-                              type="button"
-                              class="cursor-help"
-                              (click)="
-                                $event.preventDefault();
-                                $event.stopPropagation()
-                              "
-                            >
-                              <svg
-                                width="15"
-                                height="15"
-                                viewBox="0 0 15 15"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M7.25 11V7.25H6.5M7.25 14C3.52175 14 0.5 10.9783 0.5 7.25C0.5 3.52175 3.52175 0.5 7.25 0.5C10.9783 0.5 14 3.52175 14 7.25C14 10.9783 10.9783 14 7.25 14ZM7.06175 4.25C6.95825 4.25 6.87425 4.334 6.875 4.4375C6.875 4.541 6.959 4.625 7.0625 4.625C7.166 4.625 7.25 4.541 7.25 4.4375C7.25 4.334 7.166 4.25 7.06175 4.25Z"
-                                  stroke="#101828"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-
-                        <!-- Custom Price Toggle -->
-
-                        <div class="flex items-center gap-3.5">
-                          <button
-                            type="button"
-                            (click)="toggleCustomPrice(group.id, variant.id)"
-                            class="border-border-primary relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 bg-white p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
-                            role="switch"
-                            [attr.aria-checked]="variant.customPrice"
-                          >
-                            <span
-                              aria-hidden="true"
-                              class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition duration-200 ease-in-out"
-                              [class.translate-x-5]="variant.customPrice"
-                              [class.translate-x-0]="!variant.customPrice"
-                              [class.bg-brand-primary]="variant.customPrice"
-                              [class.bg-neutral-secondary]="
-                                !variant.customPrice
-                              "
-                            ></span>
-                          </button>
-                          <div class="flex items-center gap-2">
-                            <span class="text-primary text-sm"
-                              >Custom price</span
-                            >
-                            <button
-                              type="button"
-                              class="cursor-help"
-                              (click)="
-                                $event.preventDefault();
-                                $event.stopPropagation()
-                              "
-                            >
-                              <svg
-                                width="15"
-                                height="15"
-                                viewBox="0 0 15 15"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                              >
-                                <path
-                                  d="M7.25 11V7.25H6.5M7.25 14C3.52175 14 0.5 10.9783 0.5 7.25C0.5 3.52175 3.52175 0.5 7.25 0.5C10.9783 0.5 14 3.52175 14 7.25C14 10.9783 10.9783 14 7.25 14ZM7.06175 4.25C6.95825 4.25 6.87425 4.334 6.875 4.4375C6.875 4.541 6.959 4.625 7.0625 4.625C7.166 4.625 7.25 4.541 7.25 4.4375C7.25 4.334 7.166 4.25 7.06175 4.25Z"
-                                  stroke="#101828"
-                                  stroke-linecap="round"
-                                  stroke-linejoin="round"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-
-                        <!-- Price Fields (shown when addUniquePrice is true) -->
-                        @if (variant.addUniquePrice) {
-                          <div class="grid grid-cols-3 gap-6">
-                            <app-text-input
-                              id="variantPrice-{{ variant.id }}"
-                              label="Variant price"
-                              type="number"
-                              [value]="variant.variantPrice"
-                              suffix="kr"
-                            />
-                            <app-text-input
-                              id="purchasePrice-{{ variant.id }}"
-                              label="Purchase price"
-                              type="number"
-                              [value]="variant.purchasePrice"
-                              suffix="kr"
-                            />
-                            <app-text-input
-                              id="takeAwayPrice-{{ variant.id }}"
-                              label="Take away price"
-                              type="number"
-                              [value]="variant.takeAwayPrice"
-                              suffix="kr"
-                            />
-                          </div>
-                        }
-
-                        <!-- SKU & Bar Code -->
-                        <app-input-with-button
-                          id="skuCode-{{ variant.id }}"
-                          label="SKU code"
-                          [tooltip]="true"
-                          [value]="variant.skuCode"
-                          buttonLabel="Generate new SKU code"
-                        />
-
-                        <app-input-with-button
-                          id="barCode-{{ variant.id }}"
-                          label="Bar code"
-                          [tooltip]="true"
-                          [value]="variant.barCode"
-                          buttonLabel="Generate new bar code"
-                        />
-                      </div>
-                    }
-                  </div>
-                }
+                  }
+                </div>
               </div>
-            </div>
-          }
-        </div>
-      }
+            }
+          </div>
+        }
+      </div>
     </div>
-  </div>
+  }
 </section>

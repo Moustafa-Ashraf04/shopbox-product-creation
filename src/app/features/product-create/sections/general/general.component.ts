@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { TextareaComponent } from '../../../../shared/components/textarea/textarea.component';
 import { SelectComponent } from '../../../../shared/components/select/select.component';
@@ -26,6 +26,11 @@ import { ProductFiltersComponent } from './product-filters/product-filters.compo
   templateUrl: './general.component.html',
 })
 export class GeneralComponent {
+  isExpanded = signal(true);
+
+  toggleSection() {
+    this.isExpanded.update((v) => !v);
+  }
   cashRegisterOptions = [
     {
       value: 'same',

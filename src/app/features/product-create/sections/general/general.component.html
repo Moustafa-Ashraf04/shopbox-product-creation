@@ -19,18 +19,22 @@
       <div class="flex flex-1 items-center justify-between gap-3">
         <h2 class="text-primary text-base font-semibold">General</h2>
 
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M19.9841 14.6859C19.9853 14.8959 19.945 15.1041 19.8656 15.2985C19.7862 15.493 19.6692 15.6698 19.5212 15.819C19.3729 15.9685 19.1964 16.0873 19.0019 16.1683C18.8074 16.2493 18.5988 16.291 18.3882 16.291C18.1775 16.291 17.9689 16.2493 17.7744 16.1683C17.58 16.0873 17.4034 15.9685 17.2551 15.819L12.0046 10.5366L6.72225 15.6115C6.42325 15.9087 6.01877 16.0756 5.59716 16.0756C5.17555 16.0756 4.77107 15.9087 4.47206 15.6115C4.32248 15.4631 4.20376 15.2866 4.12273 15.0922C4.04171 14.8977 4 14.6891 4 14.4784C4 14.2677 4.04171 14.0591 4.12273 13.8647C4.20376 13.6702 4.32248 13.4937 4.47206 13.3453L10.8556 7.18522C11.1539 6.89282 11.555 6.72903 11.9727 6.72903C12.3904 6.72903 12.7915 6.89282 13.0898 7.18522L19.4734 13.5688C19.6281 13.712 19.7528 13.8845 19.8405 14.0762C19.9281 14.268 19.9769 14.4752 19.9841 14.6859Z"
-            fill="#101828"
-          />
-        </svg>
+        <button type="button" class="cursor-pointer" (click)="toggleSection()">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="transition-transform duration-200"
+            [class.rotate-180]="!isExpanded()"
+          >
+            <path
+              d="M19.9841 14.6859C19.9853 14.8959 19.945 15.1041 19.8656 15.2985C19.7862 15.493 19.6692 15.6698 19.5212 15.819C19.3729 15.9685 19.1964 16.0873 19.0019 16.1683C18.8074 16.2493 18.5988 16.291 18.3882 16.291C18.1775 16.291 17.9689 16.2493 17.7744 16.1683C17.58 16.0873 17.4034 15.9685 17.2551 15.819L12.0046 10.5366L6.72225 15.6115C6.42325 15.9087 6.01877 16.0756 5.59716 16.0756C5.17555 16.0756 4.77107 15.9087 4.47206 15.6115C4.32248 15.4631 4.20376 15.2866 4.12273 15.0922C4.04171 14.8977 4 14.6891 4 14.4784C4 14.2677 4.04171 14.0591 4.12273 13.8647C4.20376 13.6702 4.32248 13.4937 4.47206 13.3453L10.8556 7.18522C11.1539 6.89282 11.555 6.72903 11.9727 6.72903C12.3904 6.72903 12.7915 6.89282 13.0898 7.18522L19.4734 13.5688C19.6281 13.712 19.7528 13.8845 19.8405 14.0762C19.9281 14.268 19.9769 14.4752 19.9841 14.6859Z"
+              fill="#101828"
+            />
+          </svg>
+        </button>
       </div>
     </div>
     <p class="text-secondary text-sm font-normal">
@@ -40,157 +44,159 @@
   </div>
 
   <!-- Content -->
-  <div class="flex flex-col gap-5 px-3.5 py-4">
-    <!-- Product Name -->
-    <div class="flex flex-col gap-1">
-      <div>
-        <app-text-input
-          id="productName"
-          label="Product name"
-          [required]="true"
-          value="Strawberry cake"
-        />
-        <span class="text-secondary text-sm">Displayed on cash register</span>
+  @if (isExpanded()) {
+    <div class="flex flex-col gap-5 px-3.5 py-4">
+      <!-- Product Name -->
+      <div class="flex flex-col gap-1">
+        <div>
+          <app-text-input
+            id="productName"
+            label="Product name"
+            [required]="true"
+            value="Strawberry cake"
+          />
+          <span class="text-secondary text-sm">Displayed on cash register</span>
+        </div>
+
+        <app-radio-group [options]="cashRegisterOptions" selectedValue="same" />
       </div>
 
-      <app-radio-group [options]="cashRegisterOptions" selectedValue="same" />
-    </div>
+      <!-- Product Details -->
+      <div class="flex flex-col gap-5">
+        <!-- Product Description -->
+        <app-textarea
+          id="productDescription"
+          label="Product description"
+          value="Strawberry Cake, crafted with soft vanilla sponge, layered with fresh strawberry filling, and topped with fluffy whipped cream and juicy strawberries. A perfect balance of sweetness and freshness, ideal for any celebration or a delightful treat!"
+        />
 
-    <!-- Product Details -->
-    <div class="flex flex-col gap-5">
-      <!-- Product Description -->
-      <app-textarea
-        id="productDescription"
-        label="Product description"
-        value="Strawberry Cake, crafted with soft vanilla sponge, layered with fresh strawberry filling, and topped with fluffy whipped cream and juicy strawberries. A perfect balance of sweetness and freshness, ideal for any celebration or a delightful treat!"
-      />
-
-      <!-- Category -->
-      <app-select
-        id="category"
-        label="Category"
-        [required]="true"
-        [tooltip]="true"
-        [options]="categoryOptions"
-      />
-
-      <!-- Price Row -->
-      <div class="grid grid-cols-2 gap-6">
-        <app-text-input
-          id="price"
-          label="Price"
-          type="number"
+        <!-- Category -->
+        <app-select
+          id="category"
+          label="Category"
           [required]="true"
           [tooltip]="true"
-          value="125"
-          suffix="incl. VAT"
+          [options]="categoryOptions"
         />
-        <app-text-input
-          id="takeAwayPrice"
-          label="Take away price"
-          type="number"
-          [tooltip]="true"
-          value="132"
-          suffix="incl. VAT"
-        />
-      </div>
 
-      <!-- Purchase Price & Unit Row -->
-      <div class="grid grid-cols-2 gap-6">
-        <app-text-input
-          id="purchasePrice"
-          label="Purchase price"
-          type="number"
-          [tooltip]="true"
-          value="0"
-          suffix="excl. VAT"
-        />
-        <app-select-with-toggle
-          id="unit"
-          label="Unit"
-          [tooltip]="true"
-          [options]="unitOptions"
-          [enabled]="false"
-        />
-      </div>
+        <!-- Price Row -->
+        <div class="grid grid-cols-2 gap-6">
+          <app-text-input
+            id="price"
+            label="Price"
+            type="number"
+            [required]="true"
+            [tooltip]="true"
+            value="125"
+            suffix="incl. VAT"
+          />
+          <app-text-input
+            id="takeAwayPrice"
+            label="Take away price"
+            type="number"
+            [tooltip]="true"
+            value="132"
+            suffix="incl. VAT"
+          />
+        </div>
 
-      <!-- Tax Group Row -->
-      <div class="grid grid-cols-2 gap-6">
-        <app-select
-          id="taxGroupDineIn"
-          label="Tax group Dine in"
-          [tooltip]="true"
-          [options]="taxGroupOptions"
-        />
-        <app-select
-          id="taxGroupToGo"
-          label="Tax group To Go"
-          [tooltip]="true"
-          [options]="taxGroupToGoOptions"
-        />
-      </div>
+        <!-- Purchase Price & Unit Row -->
+        <div class="grid grid-cols-2 gap-6">
+          <app-text-input
+            id="purchasePrice"
+            label="Purchase price"
+            type="number"
+            [tooltip]="true"
+            value="0"
+            suffix="excl. VAT"
+          />
+          <app-select-with-toggle
+            id="unit"
+            label="Unit"
+            [tooltip]="true"
+            [options]="unitOptions"
+            [enabled]="false"
+          />
+        </div>
 
-      <!-- SKU & Bar Code Row -->
-      <div class="grid grid-cols-2 gap-6">
-        <app-input-with-button
-          id="skuCode"
-          label="SKU code"
-          [tooltip]="true"
-          value="SB-8214155"
-          buttonLabel="New SKU code"
-        />
-        <app-input-with-button
-          id="barCode"
-          label="Bar code"
-          [tooltip]="true"
-          value="012421000045521"
-          buttonLabel="New bar code"
-        />
-      </div>
+        <!-- Tax Group Row -->
+        <div class="grid grid-cols-2 gap-6">
+          <app-select
+            id="taxGroupDineIn"
+            label="Tax group Dine in"
+            [tooltip]="true"
+            [options]="taxGroupOptions"
+          />
+          <app-select
+            id="taxGroupToGo"
+            label="Tax group To Go"
+            [tooltip]="true"
+            [options]="taxGroupToGoOptions"
+          />
+        </div>
 
-      <!-- Price Settings -->
-      <div
-        class="border-border-primary bg-surface-primary shadow-card rounded-lg border"
-      >
-        <h3 class="text-primary px-4 py-3.5 text-base font-semibold">
-          Price settings
-        </h3>
-        <div class="flex flex-col gap-3 px-4 py-3.5">
-          <div class="flex flex-wrap gap-x-6 gap-y-3">
-            <app-checkbox
-              id="customPrice"
-              label="Custom price"
-              [checked]="true"
-              [tooltip]="true"
-            />
-            <app-checkbox
-              id="quantityPrices"
-              label="Quantity prices"
-              [tooltip]="true"
-            />
-            <app-checkbox
-              id="closedForDiscount"
-              label="Closed for discount"
-              [tooltip]="true"
-            />
-          </div>
-          <div class="flex flex-wrap gap-x-6 gap-y-3">
-            <app-checkbox
-              id="externalReferenceField"
-              label="External reference field"
-              [tooltip]="true"
-            />
-            <app-checkbox
-              id="requireExternalReferenceField"
-              label="Require external reference filed"
-              [disabled]="true"
-              [tooltip]="true"
-            />
+        <!-- SKU & Bar Code Row -->
+        <div class="grid grid-cols-2 gap-6">
+          <app-input-with-button
+            id="skuCode"
+            label="SKU code"
+            [tooltip]="true"
+            value="SB-8214155"
+            buttonLabel="New SKU code"
+          />
+          <app-input-with-button
+            id="barCode"
+            label="Bar code"
+            [tooltip]="true"
+            value="012421000045521"
+            buttonLabel="New bar code"
+          />
+        </div>
+
+        <!-- Price Settings -->
+        <div
+          class="border-border-primary bg-surface-primary shadow-card rounded-lg border"
+        >
+          <h3 class="text-primary px-4 py-3.5 text-base font-semibold">
+            Price settings
+          </h3>
+          <div class="flex flex-col gap-3 px-4 py-3.5">
+            <div class="flex flex-wrap gap-x-6 gap-y-3">
+              <app-checkbox
+                id="customPrice"
+                label="Custom price"
+                [checked]="true"
+                [tooltip]="true"
+              />
+              <app-checkbox
+                id="quantityPrices"
+                label="Quantity prices"
+                [tooltip]="true"
+              />
+              <app-checkbox
+                id="closedForDiscount"
+                label="Closed for discount"
+                [tooltip]="true"
+              />
+            </div>
+            <div class="flex flex-wrap gap-x-6 gap-y-3">
+              <app-checkbox
+                id="externalReferenceField"
+                label="External reference field"
+                [tooltip]="true"
+              />
+              <app-checkbox
+                id="requireExternalReferenceField"
+                label="Require external reference filed"
+                [disabled]="true"
+                [tooltip]="true"
+              />
+            </div>
           </div>
         </div>
+        <app-product-tags />
+        <app-product-filters />
       </div>
-      <app-product-tags />
-      <app-product-filters />
     </div>
-  </div>
+  }
 </section>

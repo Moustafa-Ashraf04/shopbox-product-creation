@@ -21,7 +21,12 @@ interface Branch {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InventoryComponent {
+  isExpanded = signal(true);
   enableInventory = signal(true);
+
+  toggleSection() {
+    this.isExpanded.update((v) => !v);
+  }
 
   branches = signal<Branch[]>([
     {

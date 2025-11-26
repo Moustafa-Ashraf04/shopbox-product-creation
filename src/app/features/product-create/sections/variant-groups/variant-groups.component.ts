@@ -35,7 +35,12 @@ interface VariantGroup {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class VariantGroupsComponent {
+  isExpanded = signal(true);
   inventoryOnVariants = signal(true);
+
+  toggleSection() {
+    this.isExpanded.update((v) => !v);
+  }
 
   variantGroups = signal<VariantGroup[]>([
     {

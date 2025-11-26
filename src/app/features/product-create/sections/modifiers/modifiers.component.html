@@ -1,0 +1,376 @@
+<section
+  class="border-border-primary bg-surface-primary shadow-card rounded-2xl border"
+>
+  <!-- Header -->
+  <div class="border-border-secondary border-b px-6 py-4">
+    <div class="mb-1.5 flex items-center gap-3">
+      <!-- Modifiers Icon -->
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M13.307 3.54075L15.734 5.96775C16.455 6.68875 16.455 7.85975 15.734 8.58175L13.307 11.0087C12.586 11.7297 11.415 11.7297 10.693 11.0087L8.266 8.58175C7.545 7.86075 7.545 6.68975 8.266 5.96775L10.693 3.54075C11.415 2.81975 12.585 2.81975 13.307 3.54075Z"
+          stroke="#101828"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M21 15.6667V19.1338C21 20.1638 20.164 20.9998 19.133 20.9998H15.666C14.635 20.9998 13.799 20.1637 13.799 19.1327V15.6658C13.799 14.6358 14.635 13.7987 15.666 13.7987H19.133C20.164 13.7997 21 14.6357 21 15.6667Z"
+          stroke="#101828"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          d="M3 17.3997C3 15.4117 4.612 13.7998 6.6 13.7998C8.588 13.7998 10.2 15.4117 10.2 17.3997C10.2 19.3877 8.588 20.9998 6.6 20.9998C4.612 20.9998 3 19.3877 3 17.3997Z"
+          stroke="#101828"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+
+      <div class="flex flex-1 items-center justify-between gap-3">
+        <h2 class="text-primary text-base font-semibold">
+          Modifiers & modifier groups
+        </h2>
+
+        <!-- Chevron -->
+        <button type="button" class="cursor-pointer" (click)="toggleSection()">
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            class="transition-transform duration-200"
+            [class.rotate-180]="!isExpanded()"
+          >
+            <path
+              d="M19.9841 14.6859C19.9853 14.8959 19.945 15.1041 19.8656 15.2985C19.7862 15.493 19.6692 15.6698 19.5212 15.819C19.3729 15.9685 19.1964 16.0873 19.0019 16.1683C18.8074 16.2493 18.5988 16.291 18.3882 16.291C18.1775 16.291 17.9689 16.2493 17.7744 16.1683C17.58 16.0873 17.4034 15.9685 17.2551 15.819L12.0046 10.5366L6.72225 15.6115C6.42325 15.9087 6.01877 16.0756 5.59716 16.0756C5.17555 16.0756 4.77107 15.9087 4.47206 15.6115C4.32248 15.4631 4.20376 15.2866 4.12273 15.0922C4.04171 14.8977 4 14.6891 4 14.4784C4 14.2677 4.04171 14.0591 4.12273 13.8647C4.20376 13.6702 4.32248 13.4937 4.47206 13.3453L10.8556 7.18522C11.1539 6.89282 11.555 6.72903 11.9727 6.72903C12.3904 6.72903 12.7915 6.89282 13.0898 7.18522L19.4734 13.5688C19.6281 13.712 19.7528 13.8845 19.8405 14.0762C19.9281 14.268 19.9769 14.4752 19.9841 14.6859Z"
+              fill="#101828"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+    <p class="text-secondary text-sm font-normal">
+      Modifiers let you customize products with optional add-ons or variations.
+      Set the minimum and maximum selections, define pricing, and choose default
+      options.
+    </p>
+  </div>
+
+  <!-- Content -->
+  @if (isExpanded()) {
+    <div class="flex flex-col gap-6 p-6">
+      <!-- Add Modifiers Button -->
+      <button
+        type="button"
+        class="bg-surface-brand-secondary text-brand-primary flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-3 text-base font-semibold"
+      >
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M4.5 12H19.5M12 19.5V4.5"
+            stroke="#0E9E73"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+        Add modifiers
+      </button>
+
+      <!-- Modifier Categories -->
+      @for (category of categories(); track category.id) {
+        <div
+          class="border-border-primary bg-surface-primary shadow-card rounded-lg border"
+        >
+          <!-- Category Header -->
+
+          <button
+            type="button"
+            class="border-border-secondary flex w-full cursor-pointer items-center gap-2 border px-3 py-4"
+            (click)="toggleCategory(category.id)"
+          >
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              class="transition-transform duration-200"
+              [class.rotate-180]="!category.expanded"
+            >
+              <path
+                d="M11.6465 8.64648C11.8417 8.45124 12.1583 8.45124 12.3535 8.64648L18.3535 14.6465C18.5488 14.8417 18.5488 15.1583 18.3535 15.3535C18.1583 15.5488 17.8417 15.5488 17.6465 15.3535L12 9.70703L6.35352 15.3535C6.15825 15.5487 5.84175 15.5487 5.64648 15.3535C5.45124 15.1583 5.45124 14.8417 5.64648 14.6465L11.6465 8.64648Z"
+                fill="#101828"
+                stroke="#101828"
+              />
+            </svg>
+            <span class="text-primary text-lg font-semibold">{{
+              category.title
+            }}</span>
+          </button>
+
+          <!-- Category Content -->
+          @if (category.expanded) {
+            <div class="bg-surface-secondary flex flex-col gap-5 px-3 py-4">
+              <!-- Modifier Groups -->
+              @for (group of category.groups; track group.id) {
+                <div
+                  class="border-border-primary bg-surface-primary shadow-card rounded-lg border"
+                >
+                  <!-- Group Header -->
+                  <div class="flex items-center justify-between gap-3 p-4">
+                    <div class="flex items-center gap-2">
+                      <!-- Drag Handle -->
+                      <button type="button" class="cursor-grab">
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M4.5 12.375C4.5 11.9608 4.83579 11.625 5.25 11.625H18.75C19.1642 11.625 19.5 11.9608 19.5 12.375C19.5 12.7892 19.1642 13.125 18.75 13.125H5.25C4.83579 13.125 4.5 12.7892 4.5 12.375Z"
+                            fill="#101828"
+                          />
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M4.5 8.25C4.5 7.83579 4.83579 7.5 5.25 7.5H18.75C19.1642 7.5 19.5 7.83579 19.5 8.25C19.5 8.66421 19.1642 9 18.75 9H5.25C4.83579 9 4.5 8.66421 4.5 8.25Z"
+                            fill="#101828"
+                          />
+                          <path
+                            fill-rule="evenodd"
+                            clip-rule="evenodd"
+                            d="M4.5 16.5C4.5 16.0858 4.83579 15.75 5.25 15.75H18.75C19.1642 15.75 19.5 16.0858 19.5 16.5C19.5 16.9142 19.1642 17.25 18.75 17.25H5.25C4.83579 17.25 4.5 16.9142 4.5 16.5Z"
+                            fill="#101828"
+                          />
+                          <path
+                            d="M9.05438 19.8861L9.08812 19.919L11.6381 22.3656C11.7244 22.4484 11.8538 22.5 11.9981 22.5C12.1425 22.5 12.2719 22.4468 12.3581 22.3656L14.9062 19.9237L14.9494 19.883C14.9812 19.8439 15 19.797 15 19.747C15 19.611 14.8612 19.5 14.6888 19.5H9.31125C9.13875 19.5 9 19.611 9 19.747C9 19.7986 9.02063 19.8471 9.05438 19.8861Z"
+                            fill="#101828"
+                          />
+                          <path
+                            d="M14.9456 4.86386L14.9119 4.83103L12.3619 2.38445C12.2756 2.30159 12.1463 2.25 12.0019 2.25C11.8575 2.25 11.7281 2.30315 11.6419 2.38445L9.09375 4.82634L9.05062 4.86699C9.01875 4.90607 9 4.95297 9 5.003C9 5.139 9.13875 5.25 9.31125 5.25L14.6888 5.25C14.8612 5.25 15 5.139 15 5.003C15 4.95141 14.9794 4.90294 14.9456 4.86386Z"
+                            fill="#101828"
+                          />
+                        </svg>
+                      </button>
+                      <span class="text-primary text-base font-semibold"
+                        >{{ "{" }}{{ group.name }}{{ "}" }}</span
+                      >
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                      @if (category.type === "addon") {
+                        <div
+                          class="text-primary flex items-center gap-3 text-sm font-medium"
+                        >
+                          <span class="bg-surface-info-primary rounded p-1"
+                            >Min:{{ group.min }}</span
+                          >
+                          <span class="bg-surface-info-primary rounded p-1"
+                            >Max:{{ group.max }}</span
+                          >
+                          <span class="bg-surface-info-primary rounded p-1"
+                            >Included: {{ group.included }}</span
+                          >
+                        </div>
+                      }
+
+                      <!-- Edit Button -->
+                      <button type="button" class="cursor-pointer">
+                        <svg
+                          width="38"
+                          height="38"
+                          viewBox="0 0 38 38"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M24.2503 17.2198L20.7803 13.7498M10.8041 27.196L13.74 26.8698C14.0987 26.8299 14.2781 26.81 14.4457 26.7557C14.5944 26.7076 14.736 26.6396 14.8665 26.5535C15.0136 26.4565 15.1412 26.3289 15.3964 26.0737L26.8528 14.6173C27.811 13.6591 27.811 12.1056 26.8528 11.1474C25.8945 10.1892 24.341 10.1892 23.3828 11.1474L11.9264 22.6037C11.6712 22.859 11.5436 22.9865 11.4466 23.1336C11.3605 23.2642 11.2925 23.4057 11.2444 23.5544C11.1901 23.722 11.1702 23.9013 11.1303 24.2601L10.8041 27.196Z"
+                            stroke="#101828"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </button>
+                      <!-- Delete Button -->
+                      <button
+                        type="button"
+                        class="cursor-pointer"
+                        (click)="removeModifierGroup(category.id, group.id)"
+                      >
+                        <svg
+                          width="38"
+                          height="38"
+                          viewBox="0 0 38 38"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M27 13.375H11M20.969 17.875V23.5M17.031 17.875V23.5M22.5414 28H15.4586C14.8917 28 14.3457 27.786 13.9298 27.4009C13.5139 27.0157 13.2587 26.4878 13.2152 25.9226L12.25 13.375H25.75L24.7848 25.9226C24.7413 26.4878 24.4861 27.0157 24.0702 27.4009C23.6543 27.786 23.1083 28 22.5414 28ZM16.1875 10H21.8125C22.1109 10 22.397 10.1185 22.608 10.3295C22.819 10.5405 22.9375 10.8266 22.9375 11.125V13.375H15.0625V11.125C15.0625 10.8266 15.181 10.5405 15.392 10.3295C15.603 10.1185 15.8891 10 16.1875 10Z"
+                            stroke="#F04438"
+                            stroke-width="1.5"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Modifier Options (Chips) -->
+                  <div class="flex flex-wrap gap-3 p-3">
+                    @for (option of group.options; track option.id) {
+                      <button
+                        type="button"
+                        class="flex cursor-pointer items-center gap-3 rounded border p-3 text-sm shadow-sm transition-colors"
+                        [class.border-brand-primary]="option.selected"
+                        [class.bg-surface-brand-secondary]="option.selected"
+                        [class.border-border-primary]="!option.selected"
+                        [class.bg-surface-primary]="!option.selected"
+                        (click)="
+                          toggleModifierOption(category.id, group.id, option.id)
+                        "
+                      >
+                        <span class="text-primary text-sm"
+                          >{{ "{" }}{{ option.name }}{{ "}" }}</span
+                        >
+                        <span>{{ formatPrice(option.price) }}</span>
+                      </button>
+                    }
+                  </div>
+                </div>
+              }
+
+              <!-- Standalone Modifiers -->
+              @if (category.standaloneModifiers.length > 0) {
+                <div class="flex flex-col gap-3">
+                  <span class="text-primary text-base font-semibold"
+                    >Standalone modifiers</span
+                  >
+                  @for (
+                    modifier of category.standaloneModifiers;
+                    track modifier.id
+                  ) {
+                    <div
+                      class="shadow-card flex items-center justify-between rounded border p-3 transition-colors"
+                      [class.border-brand-primary]="modifier.selected"
+                      [class.bg-surface-brand-secondary]="modifier.selected"
+                      [class.border-border-primary]="!modifier.selected"
+                      [class.bg-surface-primary]="!modifier.selected"
+                    >
+                      <div class="flex items-center gap-2">
+                        <!-- Drag Handle -->
+                        <button type="button" class="cursor-grab">
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M4.5 12.375C4.5 11.9608 4.83579 11.625 5.25 11.625H18.75C19.1642 11.625 19.5 11.9608 19.5 12.375C19.5 12.7892 19.1642 13.125 18.75 13.125H5.25C4.83579 13.125 4.5 12.7892 4.5 12.375Z"
+                              fill="#101828"
+                            />
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M4.5 8.25C4.5 7.83579 4.83579 7.5 5.25 7.5H18.75C19.1642 7.5 19.5 7.83579 19.5 8.25C19.5 8.66421 19.1642 9 18.75 9H5.25C4.83579 9 4.5 8.66421 4.5 8.25Z"
+                              fill="#101828"
+                            />
+                            <path
+                              fill-rule="evenodd"
+                              clip-rule="evenodd"
+                              d="M4.5 16.5C4.5 16.0858 4.83579 15.75 5.25 15.75H18.75C19.1642 15.75 19.5 16.0858 19.5 16.5C19.5 16.9142 19.1642 17.25 18.75 17.25H5.25C4.83579 17.25 4.5 16.9142 4.5 16.5Z"
+                              fill="#101828"
+                            />
+                            <path
+                              d="M9.05438 19.8861L9.08812 19.919L11.6381 22.3656C11.7244 22.4484 11.8538 22.5 11.9981 22.5C12.1425 22.5 12.2719 22.4468 12.3581 22.3656L14.9062 19.9237L14.9494 19.883C14.9812 19.8439 15 19.797 15 19.747C15 19.611 14.8612 19.5 14.6888 19.5H9.31125C9.13875 19.5 9 19.611 9 19.747C9 19.7986 9.02063 19.8471 9.05438 19.8861Z"
+                              fill="#101828"
+                            />
+                            <path
+                              d="M14.9456 4.86386L14.9119 4.83103L12.3619 2.38445C12.2756 2.30159 12.1463 2.25 12.0019 2.25C11.8575 2.25 11.7281 2.30315 11.6419 2.38445L9.09375 4.82634L9.05062 4.86699C9.01875 4.90607 9 4.95297 9 5.003C9 5.139 9.13875 5.25 9.31125 5.25L14.6888 5.25C14.8612 5.25 15 5.139 15 5.003C15 4.95141 14.9794 4.90294 14.9456 4.86386Z"
+                              fill="#101828"
+                            />
+                          </svg>
+                        </button>
+                        <span class="text-primary text-sm"
+                          >{{ "{" }}{{ modifier.name }}{{ "}" }}</span
+                        >
+                      </div>
+
+                      <div class="flex items-center gap-3">
+                        @if (category.type === "addon") {
+                          <div
+                            class="text-primary flex items-center gap-3 text-sm font-medium"
+                          >
+                            <span class="bg-surface-info-primary rounded p-1"
+                              >Min:{{ modifier.min }}</span
+                            >
+                            <span class="bg-surface-info-primary rounded p-1"
+                              >Max:{{ modifier.max }}</span
+                            >
+                            <span class="bg-surface-info-primary rounded p-1"
+                              >Included: {{ modifier.included }}</span
+                            >
+                          </div>
+                        }
+
+                        <!-- Delete Button -->
+                        <button
+                          type="button"
+                          class="cursor-pointer"
+                          (click)="
+                            removeStandaloneModifier(category.id, modifier.id)
+                          "
+                        >
+                          <svg
+                            width="38"
+                            height="38"
+                            viewBox="0 0 38 38"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M27 13.375H11M20.969 17.875V23.5M17.031 17.875V23.5M22.5414 28H15.4586C14.8917 28 14.3457 27.786 13.9298 27.4009C13.5139 27.0157 13.2587 26.4878 13.2152 25.9226L12.25 13.375H25.75L24.7848 25.9226C24.7413 26.4878 24.4861 27.0157 24.0702 27.4009C23.6543 27.786 23.1083 28 22.5414 28ZM16.1875 10H21.8125C22.1109 10 22.397 10.1185 22.608 10.3295C22.819 10.5405 22.9375 10.8266 22.9375 11.125V13.375H15.0625V11.125C15.0625 10.8266 15.181 10.5405 15.392 10.3295C15.603 10.1185 15.8891 10 16.1875 10Z"
+                              stroke="#F04438"
+                              stroke-width="1.5"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+          }
+        </div>
+      }
+    </div>
+  }
+</section>
