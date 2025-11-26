@@ -1,0 +1,23 @@
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+
+import { VariantGroupsComponent } from './variant-groups.component';
+
+describe('VariantGroupsComponent', () => {
+  let component: VariantGroupsComponent;
+  let fixture: ComponentFixture<VariantGroupsComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [VariantGroupsComponent]
+    })
+    .compileComponents();
+
+    fixture = TestBed.createComponent(VariantGroupsComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});

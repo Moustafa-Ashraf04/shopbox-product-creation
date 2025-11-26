@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { SidebarComponent } from './sections/sidebar/sidebar.component';
 import { GeneralSectionComponent } from './sections/general-section/general-section.component';
+import { VariantGroupsComponent } from './sections/variant-groups/variant-groups.component';
+
 @Component({
   selector: 'app-product-create',
-  imports: [SidebarComponent, GeneralSectionComponent],
+  imports: [SidebarComponent, GeneralSectionComponent, VariantGroupsComponent],
   templateUrl: './product-create.component.html',
   styleUrl: './product-create.component.css',
 })
