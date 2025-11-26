@@ -1,0 +1,223 @@
+<section
+  class="border-border-primary bg-surface-primary shadow-card rounded-2xl border"
+>
+  <!-- Header -->
+  <div class="border-border-secondary border-b px-6 py-4">
+    <div class="mb-1.5 flex items-center gap-3">
+      <!-- Inventory Icon -->
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M20.999 14.8998V20.6002C20.998 21.3731 19.4322 22 17.4995 22C15.5668 22 14.001 21.3731 14 20.6002V14.8998C14.001 14.1269 15.5678 13.5 17.4995 13.5C19.4312 13.5 20.999 14.1259 20.999 14.8998ZM20.999 14.8998C20.999 15.6727 19.4332 16.2996 17.5005 16.2996C15.5678 16.2996 14.001 15.6727 14.001 14.8998M14.001 17.75C14.001 18.5229 15.5678 19.1498 17.5005 19.1498C19.4332 19.1498 21 18.5229 21 17.75M6 11H7M10 11H11M6 14H7M10 14H11M6 17H7M10 17H11M18 8H3M11 20H5C4.46957 20 3.96086 19.7893 3.58579 19.4142C3.21071 19.0391 3 18.5304 3 18V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16C16.5304 3 17.0391 3.21071 17.4142 3.58579C17.7893 3.96086 18 4.46957 18 5V11M14 11H15"
+          stroke="#101828"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+
+      <div class="flex flex-1 items-center justify-between gap-3">
+        <h2 class="text-primary text-base font-semibold">Inventory</h2>
+
+        <!-- Chevron Up -->
+        <svg
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M19.9841 14.6859C19.9853 14.8959 19.945 15.1041 19.8656 15.2985C19.7862 15.493 19.6692 15.6698 19.5212 15.819C19.3729 15.9685 19.1964 16.0873 19.0019 16.1683C18.8074 16.2493 18.5988 16.291 18.3882 16.291C18.1775 16.291 17.9689 16.2493 17.7744 16.1683C17.58 16.0873 17.4034 15.9685 17.2551 15.819L12.0046 10.5366L6.72225 15.6115C6.42325 15.9087 6.01877 16.0756 5.59716 16.0756C5.17555 16.0756 4.77107 15.9087 4.47206 15.6115C4.32248 15.4631 4.20376 15.2866 4.12273 15.0922C4.04171 14.8977 4 14.6891 4 14.4784C4 14.2677 4.04171 14.0591 4.12273 13.8647C4.20376 13.6702 4.32248 13.4937 4.47206 13.3453L10.8556 7.18522C11.1539 6.89282 11.555 6.72903 11.9727 6.72903C12.3904 6.72903 12.7915 6.89282 13.0898 7.18522L19.4734 13.5688C19.6281 13.712 19.7528 13.8845 19.8405 14.0762C19.9281 14.268 19.9769 14.4752 19.9841 14.6859Z"
+            fill="#101828"
+          />
+        </svg>
+      </div>
+    </div>
+    <p class="text-secondary text-sm font-normal">
+      Track and manage stock levels per branch by enabling inventory and setting
+      current quantities.
+    </p>
+  </div>
+
+  <!-- Content -->
+  <div class="flex flex-col gap-6 px-6 py-4">
+    <!-- Current Stock Quantity Header -->
+    <div class="space-y-4">
+      <div class="flex items-center gap-2">
+        <span class="text-primary text-base font-semibold"
+          >Current stock quantity</span
+        >
+        <button
+          type="button"
+          class="cursor-help"
+          (click)="$event.preventDefault(); $event.stopPropagation()"
+        >
+          <svg
+            width="15"
+            height="15"
+            viewBox="0 0 15 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M7.25 11V7.25H6.5M7.25 14C3.52175 14 0.5 10.9783 0.5 7.25C0.5 3.52175 3.52175 0.5 7.25 0.5C10.9783 0.5 14 3.52175 14 7.25C14 10.9783 10.9783 14 7.25 14ZM7.06175 4.25C6.95825 4.25 6.87425 4.334 6.875 4.4375C6.875 4.541 6.959 4.625 7.0625 4.625C7.166 4.625 7.25 4.541 7.25 4.4375C7.25 4.334 7.166 4.25 7.06175 4.25Z"
+              stroke="#101828"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Enable Inventory Toggle -->
+      <div class="flex items-center gap-3">
+        <button
+          type="button"
+          (click)="toggleEnableInventory()"
+          class="border-border-primary relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 bg-white p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
+          role="switch"
+          [attr.aria-checked]="enableInventory()"
+        >
+          <span
+            aria-hidden="true"
+            class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition duration-200 ease-in-out"
+            [class.translate-x-5]="enableInventory()"
+            [class.translate-x-0]="!enableInventory()"
+            [class.bg-brand-primary]="enableInventory()"
+            [class.bg-neutral-secondary]="!enableInventory()"
+          ></span>
+        </button>
+        <span class="text-primary text-sm font-medium">Enable inventory</span>
+      </div>
+    </div>
+
+    <!-- Branches List (shown when inventory is enabled) -->
+    @if (enableInventory()) {
+      <div class="space-y-6">
+        @for (branch of branches(); track branch.id) {
+          <div class="flex flex-col gap-1.5">
+            <!-- Branch Name -->
+            <h3 class="text-brand-primary text-sm font-bold">
+              {{ branch.name }}
+            </h3>
+
+            <div class="space-y-5">
+              <!-- Stock Items -->
+              @for (item of branch.stockItems; track item.id) {
+                <div class="grid grid-cols-2 gap-6">
+                  <!-- Quantity Input with +/- buttons -->
+                  <div class="flex flex-col gap-2">
+                    <div class="flex items-end gap-2">
+                      <div class="flex flex-col gap-1">
+                        <label class="text-primary text-xs font-semibold">{{
+                          item.variantName
+                        }}</label>
+                        <input
+                          type="number"
+                          [value]="item.quantity"
+                          (input)="updateQuantity(branch.id, item.id, $event)"
+                          class="border-border-primary bg-surface-primary text-primary shadow-input focus:border-brand-primary w-full rounded-lg border px-3 py-2.5 text-sm focus:outline-none"
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        class="border-border-primary flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border bg-white"
+                        (click)="decrementQuantity(branch.id, item.id)"
+                      >
+                        <svg
+                          width="18"
+                          height="2"
+                          viewBox="0 0 18 2"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M1 1H16.5"
+                            stroke="#101828"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                          />
+                        </svg>
+                      </button>
+                      <button
+                        type="button"
+                        class="border-border-primary flex h-10 w-10 shrink-0 cursor-pointer items-center justify-center rounded-lg border bg-white"
+                        (click)="incrementQuantity(branch.id, item.id)"
+                      >
+                        <svg
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M4.5 12H19.5M12 19.5V4.5"
+                            stroke="#101828"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Minimum Stock Warning -->
+                  <div class="flex flex-col gap-1">
+                    <div class="flex items-end gap-2">
+                      <div class="flex flex-col gap-1">
+                        <label
+                          class="text-xs font-semibold"
+                          [class.text-primary]="item.warningEnabled"
+                          [class.text-disabled]="!item.warningEnabled"
+                          >Minimum stock warning</label
+                        >
+                        <input
+                          type="number"
+                          [value]="item.minimumStockWarning"
+                          [disabled]="!item.warningEnabled"
+                          (input)="
+                            updateMinimumStockWarning(
+                              branch.id,
+                              item.id,
+                              $event
+                            )
+                          "
+                          class="border-border-primary bg-surface-primary text-primary shadow-input focus:border-brand-primary w-full rounded-lg border px-3 py-2.5 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                        />
+                      </div>
+                      <!-- Warning Toggle -->
+                      <button
+                        type="button"
+                        (click)="toggleWarningEnabled(branch.id, item.id)"
+                        class="border-border-primary relative mb-1.5 inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 bg-white p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
+                        role="switch"
+                        [attr.aria-checked]="item.warningEnabled"
+                      >
+                        <span
+                          aria-hidden="true"
+                          class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition duration-200 ease-in-out"
+                          [class.translate-x-5]="item.warningEnabled"
+                          [class.translate-x-0]="!item.warningEnabled"
+                          [class.bg-brand-primary]="item.warningEnabled"
+                          [class.bg-neutral-secondary]="!item.warningEnabled"
+                        ></span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+</section>

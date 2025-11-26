@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { TextareaComponent } from '../../../../shared/components/textarea/textarea.component';
 import { SelectComponent } from '../../../../shared/components/select/select.component';
@@ -10,7 +10,7 @@ import { ProductTagsComponent } from './product-tags/product-tags.component';
 import { ProductFiltersComponent } from './product-filters/product-filters.component';
 
 @Component({
-  selector: 'app-general-section',
+  selector: 'app-general',
   imports: [
     TextInputComponent,
     TextareaComponent,
@@ -23,9 +23,9 @@ import { ProductFiltersComponent } from './product-filters/product-filters.compo
     ProductFiltersComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  templateUrl: './general-section.component.html',
+  templateUrl: './general.component.html',
 })
-export class GeneralSectionComponent {
+export class GeneralComponent {
   cashRegisterOptions = [
     {
       value: 'same',
