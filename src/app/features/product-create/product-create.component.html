@@ -1,42 +1,44 @@
-<div
-  class="mx-auto flex max-w-[868px] flex-col gap-4 px-4 py-4 md:flex-row md:gap-6 md:px-2"
->
-  <!-- Sidebar - Shown above sections on mobile, on the side on md+ screens -->
-  <app-sidebar />
-
-  <!-- Main Content -->
-  <main class="flex flex-1 flex-col gap-6 md:gap-8">
-    <app-general />
-    <app-variant-groups />
-    <app-inventory />
-    <app-modifiers />
-  </main>
-</div>
-
-<!-- Sticky Footer -->
-<footer
-  class="border-border-primary bg-surface-primary sticky bottom-0 border-t px-4 py-3 md:px-6 md:py-2"
->
-  <button
-    type="button"
-    class="bg-brand-primary flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-3 text-sm font-semibold text-white md:ml-auto md:w-auto"
-    (click)="onCreateProduct()"
+<div class="flex min-h-screen flex-col">
+  <div
+    class="mx-auto flex max-w-[868px] flex-1 flex-col gap-4 px-4 py-4 md:flex-row md:gap-6 md:px-2"
   >
-    <svg
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+    <!-- Sidebar - Shown above sections on mobile, on the side on md+ screens -->
+    <app-sidebar />
+
+    <!-- Main Content -->
+    <main class="flex flex-1 flex-col gap-6 md:gap-8">
+      <app-general />
+      <app-variant-groups />
+      <app-inventory />
+      <app-modifiers />
+    </main>
+  </div>
+
+  <!-- Sticky Footer -->
+  <footer
+    class="border-border-primary bg-surface-primary sticky bottom-0 mt-auto border-t px-4 py-3 md:px-6 md:py-2"
+  >
+    <button
+      type="button"
+      class="bg-brand-primary flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg px-4 py-3 text-sm font-semibold text-white md:ml-auto md:w-auto"
+      (click)="onCreateProduct()"
     >
-      <path
-        d="M4.5 12H19.5M12 19.5V4.5"
-        stroke="white"
-        stroke-width="1.5"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      />
-    </svg>
-    Create product
-  </button>
-</footer>
+      <svg
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path
+          d="M4.5 12H19.5M12 19.5V4.5"
+          stroke="white"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+      Create product
+    </button>
+  </footer>
+</div>
