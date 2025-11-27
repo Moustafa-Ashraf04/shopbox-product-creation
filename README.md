@@ -1,59 +1,162 @@
-# ShopboxProductCreationTask
+# Shopbox Product Creation
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.2.19.
+A modern Angular 19 application for creating and managing products with variants, modifiers, and inventory tracking. Built with standalone components, signals for state management, and Tailwind CSS for styling.
 
-## Development server
+## Features
 
-To start a local development server, run:
+### Product Creation Form
+A comprehensive product creation interface with multiple sections:
+
+- **General Section** - Product name, description, category, filters, and tags
+- **Inventory Section** - Stock management, SKU codes, and barcode generation
+- **Variant Groups** - Create product variants with unique pricing and inventory
+- **Modifiers** - Add mandatory, add-on, and opt-out modifiers to products
+- **Sidebar** - Product visibility, pricing, and tax configuration
+
+### Key Functionality
+
+#### Variant Groups
+- Start with an empty state showing a call-to-action
+- Add predefined variant groups with sample data on click
+- Each variant supports:
+  - Enable/disable toggle
+  - Unique pricing (variant price, purchase price, take-away price)
+  - SKU and barcode generation
+  - Expandable/collapsible details
+- Visual feedback when a new group is added (auto-dismisses after 3 seconds)
+
+#### Modifiers
+- Three modifier categories: Mandatory, Add-on, and Opt-out
+- Empty state with call-to-action when no modifiers exist
+- Add predefined modifier categories sequentially
+- Modifier groups with selectable options and pricing
+- Standalone modifiers support
+- Visual feedback on addition (auto-dismisses after 3 seconds)
+
+### Shared Components
+Reusable UI components in `shared/components/`:
+- `TextInputComponent` - Text input with label and validation
+- `TextareaComponent` - Multi-line text input
+- `SelectComponent` - Dropdown select
+- `SelectWithToggleComponent` - Select with toggle switch
+- `CheckboxComponent` - Checkbox input
+- `RadioGroupComponent` - Radio button group
+- `InputWithButtonComponent` - Input with action button (e.g., generate SKU)
+
+## Tech Stack
+
+- **Angular 19** - Latest Angular with standalone components
+- **TypeScript** - Strict type checking enabled
+- **Tailwind CSS 4** - Utility-first CSS framework
+- **Signals** - Angular's reactive primitive for state management
+- **Karma/Jasmine** - Unit testing framework
+
+## Project Structure
+
+```
+src/app/
+├── core/                    # Core services and models
+├── features/
+│   └── product-create/      # Product creation feature
+│       ├── sections/
+│       │   ├── general/     # General product info
+│       │   ├── inventory/   # Inventory management
+│       │   ├── modifiers/   # Product modifiers
+│       │   ├── sidebar/     # Product settings sidebar
+│       │   └── variant-groups/  # Product variants
+│       └── services/
+├── layout/
+│   └── header/              # App header component
+└── shared/
+    ├── components/          # Reusable UI components
+    ├── directives/
+    └── pipes/
+```
+
+## Getting Started
+
+### Prerequisites
+- Node.js 18+
+- npm 9+
+
+### Installation
 
 ```bash
+npm install
+```
+
+### Development Server
+
+```bash
+npm start
+# or
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Navigate to `http://localhost:4200/`. The app auto-reloads on file changes.
 
-## Code scaffolding
-
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+### Running Tests
 
 ```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
+npm test
+# or
 ng test
 ```
 
-## Running end-to-end tests
+## Unit Tests
 
-For end-to-end (e2e) testing, run:
+Comprehensive unit tests are included for all major components:
+
+### Variant Groups (`variant-groups.component.spec.ts`)
+- Component creation and initial state
+- Section expand/collapse functionality
+- Adding predefined variant groups sequentially
+- Toggling variant group expansion
+- Toggling variant enable/disable
+- Toggling unique price and custom price options
+- Removing variants from groups
+
+### Modifiers (`modifiers.component.spec.ts`)
+- Component creation and initial state
+- Section expand/collapse functionality
+- Adding predefined modifier categories (Mandatory, Add-on, Opt-out)
+- Toggling category expansion
+- Toggling modifier option selection
+- Removing modifier groups and standalone modifiers
+- Price formatting validation
+
+### Inventory (`inventory.component.spec.ts`)
+- Component creation and initial state
+- Section expand/collapse functionality
+- Stock tracking toggle
+- Inventory management options
+
+### General Section (`general.component.spec.ts`)
+- Component creation
+- Product filters functionality
+- Product tags management
+
+### Building for Production
 
 ```bash
-ng e2e
+npm run build
+# or
+ng build
 ```
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Build artifacts are stored in the `dist/` directory.
 
-## Additional Resources
+## Angular Best Practices Used
 
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- ✅ Standalone components (no NgModules)
+- ✅ Signals for reactive state management
+- ✅ `ChangeDetectionStrategy.OnPush` for performance
+- ✅ `input()` and `output()` functions instead of decorators
+- ✅ Native control flow (`@if`, `@for`, `@switch`)
+- ✅ `inject()` function instead of constructor injection
+- ✅ Reactive forms
+- ✅ Lazy loading ready architecture
+
+## License
+
+Private project - All rights reserved.
