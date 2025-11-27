@@ -42,7 +42,16 @@ export class VariantGroupsComponent {
     this.isExpanded.update((v) => !v);
   }
 
-  variantGroups = signal<VariantGroup[]>([
+  variantGroups = signal<VariantGroup[]>([]);
+
+  defaultVariantOptions = signal([
+    { value: 'variant-1', label: '{Variant name1} / {Variant name2}' },
+  ]);
+
+  private variantGroupCounter = 0;
+
+  // Predefined variant groups to add sequentially
+  private readonly predefinedGroups: VariantGroup[] = [
     {
       id: 'group-1',
       name1: 'Variant Group name1',
@@ -106,27 +115,38 @@ export class VariantGroupsComponent {
       expanded: false,
       variants: [],
     },
-  ]);
+  ];
 
-  defaultVariantOptions = signal([
-    { value: 'variant-1', label: '{Variant name1} / {Variant name2}' },
-  ]);
-
-  private variantGroupCounter = 2;
+  private predefinedIndex = 0;
+  lastAddedGroup = signal<string | null>(null);
 
   toggleInventoryOnVariants() {
     this.inventoryOnVariants.update((v) => !v);
   }
 
   addVariantGroup() {
-    const newGroup: VariantGroup = {
-      id: `group-${++this.variantGroupCounter}`,
-      name1: 'Variant Group name1',
-      name2: 'Variant Group name2',
-      expanded: true,
-      variants: [],
-    };
-    this.variantGroups.update((groups) => [...groups, newGroup]);
+    let addedName: string;
+
+    // Add predefined groups first, then create new empty ones
+    if (this.predefinedIndex < this.predefinedGroups.length) {
+      const group = this.predefinedGroups[this.predefinedIndex++];
+      this.variantGroups.update((groups) => [...groups, group]);
+      this.variantGroupCounter = this.predefinedIndex;
+      addedName = `{${group.name1}} / {${group.name2}}`;
+    } else {
+      const newGroup: VariantGroup = {
+        id: `group-${++this.variantGroupCounter}`,
+        name1: 'Variant Group name1',
+        name2: 'Variant Group name2',
+        expanded: true,
+        variants: [],
+      };
+      this.variantGroups.update((groups) => [...groups, newGroup]);
+      addedName = `{${newGroup.name1}} / {${newGroup.name2}}`;
+    }
+
+    this.lastAddedGroup.set(addedName);
+    setTimeout(() => this.lastAddedGroup.set(null), 3000);
   }
 
   toggleVariantGroup(groupId: string) {
@@ -217,31 +237,6 @@ export class VariantGroupsComponent {
             }
           : group,
       ),
-    );
-  }
-
-  reorderVariant(groupId: string, variantId: string, direction: 'up' | 'down') {
-    this.variantGroups.update((groups) =>
-      groups.map((group) => {
-        if (group.id !== groupId) return group;
-
-        const variants = [...group.variants];
-        const index = variants.findIndex((v) => v.id === variantId);
-
-        if (direction === 'up' && index > 0) {
-          [variants[index - 1], variants[index]] = [
-            variants[index],
-            variants[index - 1],
-          ];
-        } else if (direction === 'down' && index < variants.length - 1) {
-          [variants[index], variants[index + 1]] = [
-            variants[index + 1],
-            variants[index],
-          ];
-        }
-
-        return { ...group, variants };
-      }),
     );
   }
 }

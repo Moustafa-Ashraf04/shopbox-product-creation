@@ -43,7 +43,10 @@ interface ModifierCategory {
 export class ModifiersComponent {
   isExpanded = signal(true);
 
-  categories = signal<ModifierCategory[]>([
+  categories = signal<ModifierCategory[]>([]);
+
+  // Predefined categories to add sequentially
+  private readonly predefinedCategories: ModifierCategory[] = [
     {
       id: 'mandatory',
       type: 'mandatory',
@@ -226,7 +229,22 @@ export class ModifiersComponent {
         },
       ],
     },
-  ]);
+  ];
+
+  private predefinedIndex = 0;
+  lastAddedCategory = signal<string | null>(null);
+
+  addModifierGroup() {
+    if (this.predefinedIndex >= this.predefinedCategories.length) {
+      return;
+    }
+
+    const category = this.predefinedCategories[this.predefinedIndex++];
+    this.categories.update((cats) => [...cats, category]);
+
+    this.lastAddedCategory.set(category.title);
+    setTimeout(() => this.lastAddedCategory.set(null), 3000);
+  }
 
   toggleSection() {
     this.isExpanded.update((v) => !v);

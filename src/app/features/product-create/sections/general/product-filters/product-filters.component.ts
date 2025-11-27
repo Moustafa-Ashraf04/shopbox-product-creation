@@ -197,6 +197,7 @@ export class ProductFiltersComponent {
   toggleSection() {
     this.isExpanded.update((v) => !v);
   }
+
   // Product Filters
   enableAllFilters = signal<boolean>(false);
   productFilters = signal<ProductFilter[]>([

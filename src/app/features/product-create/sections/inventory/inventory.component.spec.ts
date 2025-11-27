@@ -1,11 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { InventoryComponent } from './inventory.component';
 
-/**
- * Unit Tests for InventoryComponent
- *
- * Run with: npm test
- */
 describe('InventoryComponent', () => {
   let component: InventoryComponent;
   let fixture: ComponentFixture<InventoryComponent>;

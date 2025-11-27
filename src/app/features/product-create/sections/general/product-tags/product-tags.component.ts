@@ -168,6 +168,7 @@ export class ProductTagsComponent {
   toggleSection() {
     this.isExpanded.update((v) => !v);
   }
+
   // Tag Groups
   tagGroups = signal<TagGroup[]>([
     {

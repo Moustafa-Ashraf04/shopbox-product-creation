@@ -35,9 +35,8 @@ describe('ModifiersComponent', () => {
     expect(component.isExpanded()).toBe(true);
   });
 
-  it('should have 3 categories', () => {
-    // We expect: mandatory, addon, optout
-    expect(component.categories().length).toBe(3);
+  it('should start with no categories', () => {
+    expect(component.categories().length).toBe(0);
   });
 
   // ===== TOGGLE TESTS =====
@@ -56,14 +55,14 @@ describe('ModifiersComponent', () => {
   });
 
   it('should toggle category expansion', () => {
-    // Get the mandatory category's initial state
+    // Add a category first
+    component.addModifierGroup();
+
     const before = component.categories().find((c) => c.id === 'mandatory');
     expect(before?.expanded).toBe(true);
 
-    // Toggle it
     component.toggleCategory('mandatory');
 
-    // Check it changed
     const after = component.categories().find((c) => c.id === 'mandatory');
     expect(after?.expanded).toBe(false);
   });
@@ -71,10 +70,9 @@ describe('ModifiersComponent', () => {
   // ===== MODIFIER OPTION TESTS =====
 
   it('should toggle modifier option selection', () => {
-    // Toggle the first option in the first group
+    component.addModifierGroup();
     component.toggleModifierOption('mandatory', 'mandatory-group-1', 'opt-1');
 
-    // Find and check if it's now selected
     const category = component.categories().find((c) => c.id === 'mandatory');
     const option = category?.groups[0]?.options[0];
     expect(option?.selected).toBe(true);
@@ -83,19 +81,18 @@ describe('ModifiersComponent', () => {
   // ===== REMOVE TESTS =====
 
   it('should remove a modifier group', () => {
-    // Count groups before
+    component.addModifierGroup();
     const before = component.categories().find((c) => c.id === 'mandatory');
     const countBefore = before?.groups.length || 0;
 
-    // Remove one
     component.removeModifierGroup('mandatory', 'mandatory-group-1');
 
-    // Count groups after - should be 1 less
     const after = component.categories().find((c) => c.id === 'mandatory');
     expect(after?.groups.length).toBe(countBefore - 1);
   });
 
   it('should remove a standalone modifier', () => {
+    component.addModifierGroup();
     const before = component.categories().find((c) => c.id === 'mandatory');
     const countBefore = before?.standaloneModifiers.length || 0;
 
@@ -103,6 +100,33 @@ describe('ModifiersComponent', () => {
 
     const after = component.categories().find((c) => c.id === 'mandatory');
     expect(after?.standaloneModifiers.length).toBe(countBefore - 1);
+  });
+
+  // ===== ADD MODIFIER GROUP TESTS =====
+
+  it('should add predefined categories sequentially', () => {
+    expect(component.categories().length).toBe(0);
+
+    component.addModifierGroup();
+    expect(component.categories().length).toBe(1);
+    expect(component.categories()[0].id).toBe('mandatory');
+
+    component.addModifierGroup();
+    expect(component.categories().length).toBe(2);
+    expect(component.categories()[1].id).toBe('addon');
+
+    component.addModifierGroup();
+    expect(component.categories().length).toBe(3);
+    expect(component.categories()[2].id).toBe('optout');
+  });
+
+  it('should not add more than predefined categories', () => {
+    component.addModifierGroup();
+    component.addModifierGroup();
+    component.addModifierGroup();
+    component.addModifierGroup(); // Should do nothing
+
+    expect(component.categories().length).toBe(3);
   });
 
   // ===== FORMAT PRICE TEST =====
