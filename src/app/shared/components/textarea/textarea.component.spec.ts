@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { TextareaComponent } from './textarea.component';
 
 describe('TextareaComponent', () => {
@@ -13,6 +12,11 @@ describe('TextareaComponent', () => {
 
     fixture = TestBed.createComponent(TextareaComponent);
     component = fixture.componentInstance;
+
+    // Set required inputs before detectChanges
+    fixture.componentRef.setInput('id', 'test-textarea');
+    fixture.componentRef.setInput('label', 'Test Label');
+
     fixture.detectChanges();
   });
 

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SelectWithToggleComponent } from './select-with-toggle.component';
 
 describe('SelectWithToggleComponent', () => {
@@ -13,6 +12,12 @@ describe('SelectWithToggleComponent', () => {
 
     fixture = TestBed.createComponent(SelectWithToggleComponent);
     component = fixture.componentInstance;
+
+    // Set required inputs before detectChanges
+    fixture.componentRef.setInput('id', 'test-select-toggle');
+    fixture.componentRef.setInput('label', 'Test Label');
+    fixture.componentRef.setInput('options', []);
+
     fixture.detectChanges();
   });
 

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ProductCreateComponent } from './product-create.component';
 
 describe('ProductCreateComponent', () => {
@@ -18,5 +17,13 @@ describe('ProductCreateComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should have onCreateProduct method', () => {
+    expect(component.onCreateProduct).toBeDefined();
+  });
+
+  it('should call onCreateProduct without error', () => {
+    expect(() => component.onCreateProduct()).not.toThrow();
   });
 });

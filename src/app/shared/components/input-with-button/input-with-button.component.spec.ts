@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { InputWithButtonComponent } from './input-with-button.component';
 
 describe('InputWithButtonComponent', () => {
@@ -13,6 +12,12 @@ describe('InputWithButtonComponent', () => {
 
     fixture = TestBed.createComponent(InputWithButtonComponent);
     component = fixture.componentInstance;
+
+    // Set required inputs before detectChanges
+    fixture.componentRef.setInput('id', 'test-input-button');
+    fixture.componentRef.setInput('label', 'Test Label');
+    fixture.componentRef.setInput('buttonLabel', 'Click Me');
+
     fixture.detectChanges();
   });
 

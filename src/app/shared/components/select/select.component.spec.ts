@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { SelectComponent } from './select.component';
 
 describe('SelectComponent', () => {
@@ -13,6 +12,12 @@ describe('SelectComponent', () => {
 
     fixture = TestBed.createComponent(SelectComponent);
     component = fixture.componentInstance;
+
+    // Set required inputs before detectChanges
+    fixture.componentRef.setInput('id', 'test-select');
+    fixture.componentRef.setInput('label', 'Test Label');
+    fixture.componentRef.setInput('options', []);
+
     fixture.detectChanges();
   });
 

@@ -1,5 +1,4 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { CheckboxComponent } from './checkbox.component';
 
 describe('CheckboxComponent', () => {
@@ -13,6 +12,11 @@ describe('CheckboxComponent', () => {
 
     fixture = TestBed.createComponent(CheckboxComponent);
     component = fixture.componentInstance;
+
+    // Set required inputs before detectChanges
+    fixture.componentRef.setInput('id', 'test-checkbox');
+    fixture.componentRef.setInput('label', 'Test Label');
+
     fixture.detectChanges();
   });
 
