@@ -1,8 +1,8 @@
 <section
-  class="border-border-primary bg-surface-primary shadow-card rounded-2xl border"
+  class="border-border-primary bg-surface-primary shadow-card rounded-xl border md:rounded-2xl"
 >
   <!-- Header -->
-  <div class="border-border-secondary border-b px-6 py-4">
+  <div class="border-border-secondary border-b px-3 py-3 sm:px-6 sm:py-4">
     <div class="mb-1.5 flex items-center gap-3">
       <!-- Inventory Icon -->
       <svg
@@ -11,6 +11,7 @@
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        class="hidden sm:block"
       >
         <path
           d="M20.999 14.8998V20.6002C20.998 21.3731 19.4322 22 17.4995 22C15.5668 22 14.001 21.3731 14 20.6002V14.8998C14.001 14.1269 15.5678 13.5 17.4995 13.5C19.4312 13.5 20.999 14.1259 20.999 14.8998ZM20.999 14.8998C20.999 15.6727 19.4332 16.2996 17.5005 16.2996C15.5678 16.2996 14.001 15.6727 14.001 14.8998M14.001 17.75C14.001 18.5229 15.5678 19.1498 17.5005 19.1498C19.4332 19.1498 21 18.5229 21 17.75M6 11H7M10 11H11M6 14H7M10 14H11M6 17H7M10 17H11M18 8H3M11 20H5C4.46957 20 3.96086 19.7893 3.58579 19.4142C3.21071 19.0391 3 18.5304 3 18V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H16C16.5304 3 17.0391 3.21071 17.4142 3.58579C17.7893 3.96086 18 4.46957 18 5V11M14 11H15"
@@ -51,7 +52,7 @@
 
   <!-- Content -->
   @if (isExpanded()) {
-    <div class="flex flex-col gap-6 px-6 py-4">
+    <div class="flex flex-col gap-4 px-3 py-3 sm:gap-6 sm:px-6 sm:py-4">
       <!-- Current Stock Quantity Header -->
       <div class="space-y-4">
         <div class="flex items-center gap-2">
@@ -115,11 +116,11 @@
               <div class="space-y-5">
                 <!-- Stock Items -->
                 @for (item of branch.stockItems; track item.id) {
-                  <div class="grid grid-cols-2 gap-6">
+                  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6">
                     <!-- Quantity Input with +/- buttons -->
                     <div class="flex flex-col gap-2">
                       <div class="flex items-end gap-2">
-                        <div class="flex flex-col gap-1">
+                        <div class="flex min-w-0 flex-1 flex-col gap-1">
                           <label
                             [for]="'quantity-' + item.id"
                             class="text-primary text-xs font-semibold"
@@ -180,7 +181,7 @@
                     <!-- Minimum Stock Warning -->
                     <div class="flex flex-col gap-1">
                       <div class="flex items-end gap-2">
-                        <div class="flex flex-col gap-1">
+                        <div class="flex min-w-0 flex-1 flex-col gap-1">
                           <label
                             class="text-xs font-semibold"
                             [class.text-primary]="item.warningEnabled"

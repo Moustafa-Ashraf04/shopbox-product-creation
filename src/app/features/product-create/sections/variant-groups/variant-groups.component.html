@@ -1,8 +1,8 @@
 <section
-  class="border-border-primary bg-surface-primary shadow-card rounded-2xl border"
+  class="border-border-primary bg-surface-primary shadow-card rounded-xl border md:rounded-2xl"
 >
   <!-- Header -->
-  <div class="border-border-secondary border-b px-3.5 py-4">
+  <div class="border-border-secondary border-b px-3 py-3 sm:px-3.5 sm:py-4">
     <div class="mb-1.5 flex items-center gap-2">
       <!-- Variant Groups Icon -->
       <svg
@@ -11,6 +11,7 @@
         viewBox="0 0 24 24"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
+        class="hidden sm:block"
       >
         <path
           d="M8 9.10461V6.00335C8.00001 5.82877 8.04573 5.65724 8.1326 5.50581C8.21947 5.35438 8.34447 5.22834 8.49517 5.1402C8.64587 5.05207 8.81701 5.00493 8.99158 5.00346C9.16616 5.00199 9.33807 5.04625 9.49023 5.13183L15.2354 8.36348C15.4674 8.49397 15.6605 8.68383 15.7948 8.91357C15.9292 9.14332 16 9.40468 16 9.67083V18.0005C16 18.1751 15.9543 18.3466 15.8674 18.498C15.7806 18.6495 15.6556 18.7755 15.5049 18.8637C15.3542 18.9518 15.183 18.999 15.0084 19.0004C14.8339 19.0019 14.6619 18.9576 14.5098 18.8721L11 16.8978M13 7.10607V4.00194C13 3.82736 13.0457 3.65582 13.1326 3.50438C13.2194 3.35294 13.3444 3.22689 13.4951 3.13875C13.6458 3.05061 13.817 3.00346 13.9916 3.00199C14.1661 3.00052 14.3381 3.04477 14.4902 3.13036L20.2354 6.36199C20.4674 6.49248 20.6605 6.68234 20.7948 6.91209C20.9292 7.14184 21 7.4032 21 7.66936V15.999C21 16.1736 20.9543 16.3451 20.8674 16.4966C20.7806 16.648 20.6556 16.7741 20.5049 16.8622C20.3542 16.9503 20.183 16.9975 20.0084 16.999C19.8339 17.0004 19.6619 16.9562 19.5098 16.8706L16 14.8963M11 19.999V11.6694C11 11.4032 10.9292 11.1418 10.7948 10.9121C10.6604 10.6823 10.4674 10.4925 10.2354 10.362L4.49026 7.13036C4.33809 7.04477 4.16617 7.0005 3.99159 7.00197C3.81701 7.00344 3.64586 7.05059 3.49515 7.13873C3.34445 7.22687 3.21944 7.35293 3.13258 7.50437C3.04571 7.65581 3 7.82735 3 8.00194V16.3316C3 16.5978 3.07082 16.8591 3.20519 17.0889C3.33956 17.3186 3.53263 17.5085 3.76461 17.639L9.50974 20.8706C9.66191 20.9562 9.83383 21.0005 10.0084 20.999C10.183 20.9975 10.3541 20.9504 10.5048 20.8622C10.6556 20.7741 10.7806 20.648 10.8674 20.4966C10.9543 20.3452 11 20.1736 11 19.999Z"
@@ -52,7 +53,7 @@
 
   <!-- Content -->
   @if (isExpanded()) {
-    <div class="flex flex-col gap-4 px-6 py-3.5">
+    <div class="flex flex-col gap-4 px-3 py-3 sm:px-6 sm:py-3.5">
       <!-- Inventory on Variants Toggle -->
       <div class="flex flex-col gap-4">
         <div class="flex flex-col gap-3.5">
@@ -99,7 +100,7 @@
           </div>
           <!-- Info Message -->
           <div
-            class="bg-surface-info-primary border-border-info flex items-center gap-2 rounded-lg border p-2"
+            class="bg-surface-info-primary border-border-info flex items-start gap-2 rounded-lg border p-2 sm:items-center"
           >
             <svg
               width="24"
@@ -107,6 +108,7 @@
               viewBox="0 0 24 24"
               fill="none"
               xmlns="http://www.w3.org/2000/svg"
+              class="shrink-0"
             >
               <path
                 d="M12 2C10.0222 2 8.08879 2.58649 6.4443 3.6853C4.79981 4.78412 3.51809 6.3459 2.76121 8.17317C2.00433 10.0004 1.8063 12.0111 2.19215 13.9509C2.578 15.8907 3.53041 17.6725 4.92894 19.0711C6.32746 20.4696 8.10929 21.422 10.0491 21.8079C11.9889 22.1937 13.9996 21.9957 15.8268 21.2388C17.6541 20.4819 19.2159 19.2002 20.3147 17.5557C21.4135 15.9112 22 13.9778 22 12C22 10.6868 21.7413 9.38642 21.2388 8.17317C20.7363 6.95991 19.9997 5.85752 19.0711 4.92893C18.1425 4.00035 17.0401 3.26375 15.8268 2.7612C14.6136 2.25866 13.3132 2 12 2ZM12 20C10.4178 20 8.87104 19.5308 7.55544 18.6518C6.23985 17.7727 5.21447 16.5233 4.60897 15.0615C4.00347 13.5997 3.84504 11.9911 4.15372 10.4393C4.4624 8.88743 5.22433 7.46197 6.34315 6.34315C7.46197 5.22433 8.88743 4.4624 10.4393 4.15372C11.9911 3.84504 13.5997 4.00346 15.0615 4.60896C16.5233 5.21447 17.7727 6.23984 18.6518 7.55544C19.5308 8.87103 20 10.4177 20 12C20 14.1217 19.1572 16.1566 17.6569 17.6569C16.1566 19.1571 14.1217 20 12 20Z"
@@ -163,10 +165,12 @@
             <!-- Group Header -->
             <button
               type="button"
-              class="border-bottom border-border-primary flex w-full cursor-pointer items-center justify-between gap-8 p-6"
+              class="border-bottom border-border-primary flex w-full cursor-pointer items-center justify-between gap-4 p-4 sm:gap-8 sm:p-6"
               (click)="toggleVariantGroup(group.id)"
             >
-              <span class="text-primary text-base font-semibold">
+              <span
+                class="text-primary text-left text-sm font-semibold sm:text-base"
+              >
                 {{ "{" }}{{ group.name1 }}{{ "}" }} / {{ "{" }}{{ group.name2
                 }}{{ "}" }}
               </span>
@@ -176,7 +180,7 @@
                 viewBox="0 0 24 24"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                class="transition-transform duration-200"
+                class="shrink-0 transition-transform duration-200"
                 [class.rotate-180]="!group.expanded"
               >
                 <path
@@ -190,13 +194,13 @@
             <!-- Group Content (shown when expanded) -->
             @if (group.expanded) {
               <div
-                class="border-border-secondary flex flex-col gap-4 border-t px-6 py-4"
+                class="border-border-secondary flex flex-col gap-4 border-t px-3 py-3 sm:px-6 sm:py-4"
               >
-                <div class="space-y-6">
+                <div class="space-y-4 sm:space-y-6">
                   <!-- Create New Variants Button -->
                   <button
                     type="button"
-                    class="bg-surface-primary border-border-primary shadow-card text-brand-primary flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-dashed px-4 py-3 text-base font-semibold"
+                    class="bg-surface-primary border-border-primary shadow-card text-brand-primary flex w-full cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-dashed px-4 py-3 text-sm font-semibold sm:text-base"
                   >
                     <svg
                       width="24"
@@ -233,7 +237,7 @@
                     >
                       <!-- Variant Header -->
                       <div
-                        class="border-border-secondary flex items-center justify-between gap-2 border-b p-4"
+                        class="border-border-secondary flex flex-wrap items-center justify-between gap-2 border-b p-3 sm:flex-nowrap sm:p-4"
                       >
                         <button
                           type="button"
@@ -247,7 +251,7 @@
                             viewBox="0 0 24 24"
                             fill="none"
                             xmlns="http://www.w3.org/2000/svg"
-                            class="transition-transform duration-200"
+                            class="shrink-0 transition-transform duration-200"
                             [class.rotate-180]="!variant.expanded"
                           >
                             <path
@@ -256,7 +260,9 @@
                               stroke="#101828"
                             />
                           </svg>
-                          <span class="text-primary text-sm font-semibold">
+                          <span
+                            class="text-primary text-left text-sm font-semibold"
+                          >
                             {{ "{" }}{{ variant.name1 }}{{ "}" }} / {{ "{"
                             }}{{ variant.name2 }}{{ "}" }}
                           </span>
@@ -358,11 +364,11 @@
                       <!-- Variant Content (shown when expanded and enabled) -->
                       @if (variant.expanded && variant.enabled) {
                         <div
-                          class="bg-surface-secondary flex flex-col gap-5 p-6"
+                          class="bg-surface-secondary flex flex-col gap-4 p-4 sm:gap-5 sm:p-6"
                         >
                           <!-- Product Variant ID & Integration ID -->
                           <div
-                            class="flex flex-wrap items-center gap-4 text-sm"
+                            class="flex flex-col gap-3 text-sm sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"
                           >
                             <div class="flex items-center gap-1.5">
                               <span class="text-primary"
@@ -522,7 +528,9 @@
 
                           <!-- Price Fields (shown when addUniquePrice is true) -->
                           @if (variant.addUniquePrice) {
-                            <div class="grid grid-cols-3 gap-6">
+                            <div
+                              class="grid grid-cols-1 gap-4 sm:grid-cols-3 sm:gap-6"
+                            >
                               <app-text-input
                                 id="variantPrice-{{ variant.id }}"
                                 label="Variant price"

@@ -4,7 +4,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'app-sidebar',
   imports: [],
   template: `
-    <aside class="flex w-[204px] flex-col gap-3">
+    <aside class="flex flex-col gap-3 md:w-[204px]">
       <!-- Card 1: Image Upload -->
       <div
         class="border-border-primary bg-surface-primary shadow-card flex flex-col gap-4 rounded-lg border p-3"

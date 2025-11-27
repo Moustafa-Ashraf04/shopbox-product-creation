@@ -99,8 +99,10 @@ interface ProductFilter {
                 class="bg-surface-secondary flex flex-col gap-5 rounded-lg p-4"
               >
                 <!-- Filter Header -->
-                <div class="flex items-center justify-between">
-                  <div class="flex items-center gap-3.5">
+                <div
+                  class="flex flex-col justify-between gap-2 md:flex-row md:items-center md:gap-0"
+                >
+                  <div class="flex items-center justify-start gap-3.5">
                     <button
                       type="button"
                       (click)="toggleFilter(filter.id)"
@@ -123,7 +125,7 @@ interface ProductFilter {
                   </div>
                   <button
                     type="button"
-                    class="flex cursor-pointer items-center gap-1 text-sm"
+                    class="flex cursor-pointer items-center justify-end gap-1 text-sm md:justify-start"
                     (click)="toggleFavorite(filter.id)"
                   >
                     <svg

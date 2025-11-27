@@ -17,4 +17,8 @@ import { ModifiersComponent } from './sections/modifiers/modifiers.component';
   templateUrl: './product-create.component.html',
   styleUrl: './product-create.component.css',
 })
-export class ProductCreateComponent {}
+export class ProductCreateComponent {
+  onCreateProduct(): void {
+    console.log('Create product clicked');
+  }
+}
