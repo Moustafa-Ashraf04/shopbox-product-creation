@@ -32,6 +32,7 @@ A comprehensive product creation interface with multiple sections:
 - Modifier groups with selectable options and pricing
 - Standalone modifiers support
 - Visual feedback on addition (auto-dismisses after 3 seconds)
+- **Cypress E2E tests** cover real user product creation flows (minimal, full-featured, validation, and reset scenarios)
 
 ### Shared Components
 Reusable UI components in `shared/components/`:
@@ -102,6 +103,25 @@ npm test
 # or
 ng test
 ```
+
+### E2E Tests (Cypress)
+
+End-to-end (E2E) tests verify complete product creation workflows in a real browser environment.
+
+#### Running E2E tests:
+
+```
+npx cypress open  # Interactive mode
+npx cypress run   # Headless/CI mode
+```
+
+By default, E2E tests are located in `cypress/e2e/`.
+
+#### Key scenarios covered:
+- Minimal product creation (required fields only)
+- Complete product with variants and modifiers
+- Form validation (required fields, price constraints)
+- Creating multiple products (form resets and usability)
 
 ## Unit Tests
 
