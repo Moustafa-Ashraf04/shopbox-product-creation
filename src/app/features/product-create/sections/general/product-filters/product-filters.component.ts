@@ -1,4 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, forwardRef, signal } from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 interface ProductFilter {
   id: string;
@@ -10,7 +15,7 @@ interface ProductFilter {
 
 @Component({
   selector: 'app-product-filters',
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: ` <!-- Product Filters -->
     <div
       class="border-border-secondary bg-surface-primary shadow-card rounded-lg border"
@@ -190,9 +195,17 @@ interface ProductFilter {
         </div>
       }
     </div>`,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ProductFiltersComponent),
+      multi: true,
+    },
+  ],
 })
-export class ProductFiltersComponent {
+export class ProductFiltersComponent implements ControlValueAccessor {
   isExpanded = signal(true);
+  isDisabled = signal(false);
 
   toggleSection() {
     this.isExpanded.update((v) => !v);
@@ -238,22 +251,57 @@ export class ProductFiltersComponent {
     },
   ]);
 
+  private onChange: (value: string[]) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  writeValue(value: string[] | null): void {
+    // Set enabled filters based on incoming value
+    if (value && Array.isArray(value)) {
+      this.productFilters.update((filters) =>
+        filters.map((filter) => ({
+          ...filter,
+          enabled: value.includes(filter.id),
+        }))
+      );
+    }
+  }
+
+  registerOnChange(fn: (value: string[]) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  private emitEnabledFilters(): void {
+    const enabledFilters = this.productFilters()
+      .filter((f) => f.enabled)
+      .map((f) => f.id);
+    this.onChange(enabledFilters);
+    this.onTouched();
+  }
+
   toggleEnableAllFilters() {
     const newValue = !this.enableAllFilters();
     this.enableAllFilters.set(newValue);
     this.productFilters.update((filters) =>
-      filters.map((filter) => ({ ...filter, enabled: newValue })),
+      filters.map((filter) => ({ ...filter, enabled: newValue }))
     );
+    this.emitEnabledFilters();
   }
 
   toggleFilter(filterId: string) {
     this.productFilters.update((filters) =>
       filters.map((filter) =>
-        filter.id === filterId
-          ? { ...filter, enabled: !filter.enabled }
-          : filter,
-      ),
+        filter.id === filterId ? { ...filter, enabled: !filter.enabled } : filter
+      )
     );
+    this.emitEnabledFilters();
   }
 
   toggleFavorite(filterId: string) {
@@ -261,8 +309,8 @@ export class ProductFiltersComponent {
       filters.map((filter) =>
         filter.id === filterId
           ? { ...filter, favorite: !filter.favorite }
-          : filter,
-      ),
+          : filter
+      )
     );
   }
 
@@ -270,8 +318,8 @@ export class ProductFiltersComponent {
     const input = event.target as HTMLInputElement;
     this.productFilters.update((filters) =>
       filters.map((filter) =>
-        filter.id === filterId ? { ...filter, price: input.value } : filter,
-      ),
+        filter.id === filterId ? { ...filter, price: input.value } : filter
+      )
     );
   }
 }

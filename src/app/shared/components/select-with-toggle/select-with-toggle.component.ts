@@ -1,8 +1,19 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  input,
+  signal,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-select-with-toggle',
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="flex flex-col gap-2">
       <div class="flex items-center gap-1.5">
@@ -39,7 +50,10 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
         <div class="relative flex-1">
           <select
             [id]="id()"
-            [disabled]="!enabled()"
+            [disabled]="!isEnabled() || isDisabled()"
+            [value]="internalValue()"
+            (change)="onSelect($event)"
+            (blur)="onTouched()"
             class="border-border-primary bg-surface-primary text-primary shadow-input focus:border-brand-primary disabled:bg-surface-secondary disabled:text-disabled w-full cursor-pointer appearance-none rounded-lg border px-3.5 py-2.5 pr-10 text-sm focus:outline-none disabled:cursor-not-allowed"
           >
             @for (option of options(); track option.value) {
@@ -62,15 +76,16 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
         </div>
         <button
           type="button"
+          (click)="toggleEnabled()"
           [class]="
-            enabled()
+            isEnabled()
               ? 'bg-brand-primary relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors'
               : 'bg-border-primary relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full transition-colors'
           "
         >
           <span
             [class]="
-              enabled()
+              isEnabled()
                 ? 'pointer-events-none mt-0.5 inline-block h-5 w-5 translate-x-5 transform rounded-full bg-white shadow ring-0 transition-transform'
                 : 'pointer-events-none mt-0.5 inline-block h-5 w-5 translate-x-0.5 transform rounded-full bg-white shadow ring-0 transition-transform'
             "
@@ -80,12 +95,58 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectWithToggleComponent),
+      multi: true,
+    },
+  ],
 })
-export class SelectWithToggleComponent {
+export class SelectWithToggleComponent implements ControlValueAccessor {
   id = input.required<string>();
   label = input.required<string>();
   options = input<{ value: string; label: string }[]>([]);
-  enabled = input<boolean>(false);
   tooltip = input<boolean>(false);
   required = input<boolean>(false);
+  /** For non-reactive form usage: initial enabled state */
+  enabled = input<boolean>(false);
+
+  internalValue = signal<string>('');
+  isEnabled = signal(false);
+  isDisabled = signal(false);
+
+  private onChange: (value: string) => void = () => {};
+  onTouched: () => void = () => {};
+
+  constructor() {
+    // Initialize from input
+    this.isEnabled.set(this.enabled());
+  }
+
+  writeValue(value: string | null): void {
+    this.internalValue.set(value ?? '');
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  onSelect(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.internalValue.set(select.value);
+    this.onChange(select.value);
+  }
+
+  toggleEnabled(): void {
+    this.isEnabled.update((v) => !v);
+  }
 }

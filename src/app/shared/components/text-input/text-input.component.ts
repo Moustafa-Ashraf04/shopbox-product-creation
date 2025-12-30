@@ -1,8 +1,20 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  forwardRef,
+  input,
+  signal,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-text-input',
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="flex flex-col gap-1">
       <div class="flex items-center gap-1">
@@ -41,9 +53,14 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
           [id]="id()"
           [type]="type()"
           [placeholder]="placeholder()"
-          [value]="value()"
-          class="border-border-primary shadow-input bg-surface-primary text-primary focus:border-brand-primary w-full rounded-lg border px-3 py-2.5 text-sm focus:outline-none"
+          [value]="internalValue()"
+          [disabled]="isDisabled()"
+          (input)="onInput($event)"
+          (blur)="onTouched()"
+          class="border-border-primary shadow-input bg-surface-primary text-primary focus:border-brand-primary w-full rounded-lg border px-3 py-2.5 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
           [class.pr-17]="suffix()"
+          [class.border-red-500]="error()"
+          [class.focus:border-red-500]="error()"
         />
         @if (suffix()) {
           <span
@@ -52,17 +69,75 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
           >
         }
       </div>
+      @if (error()) {
+        <span class="text-xs text-red-500">{{ error() }}</span>
+      }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => TextInputComponent),
+      multi: true,
+    },
+  ],
 })
-export class TextInputComponent {
+export class TextInputComponent implements ControlValueAccessor {
   id = input.required<string>();
   label = input.required<string>();
   type = input<string>('text');
   placeholder = input<string>('');
-  value = input<string>('');
   required = input<boolean>(false);
   tooltip = input<boolean>(false);
   suffix = input<string>('');
+  error = input<string>('');
+  /** For non-reactive form usage */
+  value = input<string>('');
+
+  internalValue = signal<string>('');
+  isDisabled = signal(false);
+
+  private onChange: (value: string | number) => void = () => {};
+  onTouched: () => void = () => {};
+
+  constructor() {
+    // Sync input value to internal signal when used without reactive forms
+    effect(() => {
+      const inputValue = this.value();
+      if (inputValue) {
+        this.internalValue.set(inputValue);
+      }
+    });
+  }
+
+  writeValue(value: string | number | null): void {
+    this.internalValue.set(value?.toString() ?? '');
+  }
+
+  registerOnChange(fn: (value: string | number) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  onInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const rawValue = input.value;
+    this.internalValue.set(rawValue);
+
+    // Convert to number for number inputs
+    if (this.type() === 'number') {
+      const numValue = rawValue === '' ? null : parseFloat(rawValue);
+      this.onChange(numValue as unknown as number);
+    } else {
+      this.onChange(rawValue);
+    }
+  }
 }

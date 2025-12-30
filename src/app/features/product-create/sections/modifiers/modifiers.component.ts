@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
 
-interface ModifierOption {
+export interface ModifierOption {
   id: string;
   name: string;
   price: number;
   selected: boolean;
 }
 
-interface ModifierGroup {
+export interface ModifierGroup {
   id: string;
   name: string;
   min?: number;
@@ -16,7 +16,7 @@ interface ModifierGroup {
   options: ModifierOption[];
 }
 
-interface StandaloneModifier {
+export interface StandaloneModifier {
   id: string;
   name: string;
   min?: number;
@@ -25,7 +25,7 @@ interface StandaloneModifier {
   selected: boolean;
 }
 
-interface ModifierCategory {
+export interface ModifierCategory {
   id: string;
   type: 'mandatory' | 'addon' | 'optout';
   title: string;
@@ -332,5 +332,11 @@ export class ModifiersComponent {
 
   formatPrice(price: number): string {
     return price.toFixed(2).replace('.', ',') + ' kr';
+  }
+
+  getModifiersData(): { categories: ModifierCategory[] } {
+    return {
+      categories: this.categories(),
+    };
   }
 }

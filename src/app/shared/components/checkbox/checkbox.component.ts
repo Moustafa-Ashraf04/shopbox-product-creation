@@ -1,15 +1,28 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  input,
+  signal,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-checkbox',
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: `
     <label class="flex cursor-pointer items-center gap-2">
       <input
         type="checkbox"
         [id]="id()"
         [checked]="checked()"
-        [disabled]="disabled()"
+        [disabled]="isDisabled() || disabled()"
+        (change)="onCheckboxChange($event)"
+        (blur)="onTouched()"
         class="border-border-primary accent-brand-primary h-5 w-5 cursor-pointer rounded-lg disabled:cursor-not-allowed disabled:opacity-50"
       />
       <span class="text-primary text-sm">
@@ -40,11 +53,45 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     </label>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => CheckboxComponent),
+      multi: true,
+    },
+  ],
 })
-export class CheckboxComponent {
+export class CheckboxComponent implements ControlValueAccessor {
   id = input.required<string>();
   label = input.required<string>();
-  checked = input<boolean>(false);
   disabled = input<boolean>(false);
   tooltip = input<boolean>(false);
+
+  checked = signal<boolean>(false);
+  isDisabled = signal(false);
+
+  private onChange: (value: boolean) => void = () => {};
+  onTouched: () => void = () => {};
+
+  writeValue(value: boolean | null): void {
+    this.checked.set(value ?? false);
+  }
+
+  registerOnChange(fn: (value: boolean) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  onCheckboxChange(event: Event): void {
+    const checkbox = event.target as HTMLInputElement;
+    this.checked.set(checkbox.checked);
+    this.onChange(checkbox.checked);
+  }
 }

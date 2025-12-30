@@ -1,4 +1,5 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { TextInputComponent } from '../../../../shared/components/text-input/text-input.component';
 import { TextareaComponent } from '../../../../shared/components/textarea/textarea.component';
 import { SelectComponent } from '../../../../shared/components/select/select.component';
@@ -12,6 +13,7 @@ import { ProductFiltersComponent } from './product-filters/product-filters.compo
 @Component({
   selector: 'app-general',
   imports: [
+    ReactiveFormsModule,
     TextInputComponent,
     TextareaComponent,
     SelectComponent,
@@ -26,11 +28,15 @@ import { ProductFiltersComponent } from './product-filters/product-filters.compo
   templateUrl: './general.component.html',
 })
 export class GeneralComponent {
+  formGroup = input.required<FormGroup>();
+  getFieldError = input.required<(fieldName: string) => string | null>();
+
   isExpanded = signal(true);
 
   toggleSection() {
     this.isExpanded.update((v) => !v);
   }
+
   cashRegisterOptions = [
     {
       value: 'same',
@@ -40,6 +46,7 @@ export class GeneralComponent {
   ];
 
   categoryOptions = [
+    { value: '', label: 'Select a category' },
     { value: 'cake', label: 'Cake' },
     { value: 'pastry', label: 'Pastry' },
     { value: 'bread', label: 'Bread' },

@@ -1,4 +1,9 @@
-import { Component, signal } from '@angular/core';
+import { Component, forwardRef, signal } from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 interface Tag {
   id: string;
@@ -15,7 +20,7 @@ interface TagGroup {
 
 @Component({
   selector: 'app-product-tags',
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: `
     <!-- Product Tags -->
     <div
@@ -161,9 +166,17 @@ interface TagGroup {
       }
     </div>
   `,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => ProductTagsComponent),
+      multi: true,
+    },
+  ],
 })
-export class ProductTagsComponent {
+export class ProductTagsComponent implements ControlValueAccessor {
   isExpanded = signal(true);
+  isDisabled = signal(false);
 
   toggleSection() {
     this.isExpanded.update((v) => !v);
@@ -227,6 +240,48 @@ export class ProductTagsComponent {
   ]);
 
   private tagGroupCounter = 5;
+  private onChange: (value: string[]) => void = () => {};
+  private onTouched: () => void = () => {};
+
+  writeValue(value: string[] | null): void {
+    // Set selected tags based on incoming value
+    if (value && Array.isArray(value)) {
+      this.tagGroups.update((groups) =>
+        groups.map((group) => ({
+          ...group,
+          tags: group.tags.map((tag) => ({
+            ...tag,
+            selected: value.includes(tag.id),
+          })),
+        }))
+      );
+    }
+  }
+
+  registerOnChange(fn: (value: string[]) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  private emitSelectedTags(): void {
+    const selectedTags: string[] = [];
+    this.tagGroups().forEach((group) => {
+      group.tags.forEach((tag) => {
+        if (tag.selected) {
+          selectedTags.push(tag.id);
+        }
+      });
+    });
+    this.onChange(selectedTags);
+    this.onTouched();
+  }
 
   addTagGroup() {
     const newGroup: TagGroup = {
@@ -251,15 +306,16 @@ export class ProductTagsComponent {
 
   removeTagGroup(groupId: string) {
     this.tagGroups.update((groups) =>
-      groups.filter((group) => group.id !== groupId),
+      groups.filter((group) => group.id !== groupId)
     );
+    this.emitSelectedTags();
   }
 
   toggleTagGroup(groupId: string) {
     this.tagGroups.update((groups) =>
       groups.map((group) =>
-        group.id === groupId ? { ...group, expanded: !group.expanded } : group,
-      ),
+        group.id === groupId ? { ...group, expanded: !group.expanded } : group
+      )
     );
   }
 
@@ -270,11 +326,12 @@ export class ProductTagsComponent {
           ? {
               ...group,
               tags: group.tags.map((tag) =>
-                tag.id === tagId ? { ...tag, selected: !tag.selected } : tag,
+                tag.id === tagId ? { ...tag, selected: !tag.selected } : tag
               ),
             }
-          : group,
-      ),
+          : group
+      )
     );
+    this.emitSelectedTags();
   }
 }

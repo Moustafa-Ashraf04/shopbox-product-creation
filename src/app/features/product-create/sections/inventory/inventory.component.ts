@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  input,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { FormArray, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 interface StockItem {
   id: string;
@@ -16,19 +23,23 @@ interface Branch {
 
 @Component({
   selector: 'app-inventory',
-  imports: [],
+  imports: [ReactiveFormsModule],
   templateUrl: './inventory.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class InventoryComponent {
+export class InventoryComponent implements OnInit {
+  formGroup = input.required<FormGroup>();
+  addBranch = input.required<(branch: Branch) => void>();
+  branchesArray = input.required<FormArray>();
+
   isExpanded = signal(true);
-  enableInventory = signal(true);
 
   toggleSection() {
     this.isExpanded.update((v) => !v);
   }
 
-  branches = signal<Branch[]>([
+  // Default branches data
+  private readonly defaultBranches: Branch[] = [
     {
       id: 'branch-1',
       name: 'Greenwood Odense',
@@ -69,10 +80,24 @@ export class InventoryComponent {
         },
       ],
     },
-  ]);
+  ];
+
+  branches = signal<Branch[]>(this.defaultBranches);
+
+  ngOnInit(): void {
+    // Initialize form branches
+    this.defaultBranches.forEach((branch) => {
+      this.addBranch()(branch);
+    });
+  }
+
+  get enableInventory(): boolean {
+    return this.formGroup().get('enabled')?.value ?? false;
+  }
 
   toggleEnableInventory() {
-    this.enableInventory.update((v) => !v);
+    const currentValue = this.enableInventory;
+    this.formGroup().get('enabled')?.setValue(!currentValue);
   }
 
   incrementQuantity(branchId: string, stockId: string) {
@@ -90,6 +115,7 @@ export class InventoryComponent {
           : branch,
       ),
     );
+    this.updateFormBranchStock(branchId, stockId, 'quantity', 1, true);
   }
 
   decrementQuantity(branchId: string, stockId: string) {
@@ -107,6 +133,7 @@ export class InventoryComponent {
           : branch,
       ),
     );
+    this.updateFormBranchStock(branchId, stockId, 'quantity', -1, true);
   }
 
   updateQuantity(branchId: string, stockId: string, event: Event) {
@@ -126,6 +153,7 @@ export class InventoryComponent {
           : branch,
       ),
     );
+    this.updateFormBranchStock(branchId, stockId, 'quantity', value, false);
   }
 
   updateMinimumStockWarning(branchId: string, stockId: string, event: Event) {
@@ -145,6 +173,13 @@ export class InventoryComponent {
           : branch,
       ),
     );
+    this.updateFormBranchStock(
+      branchId,
+      stockId,
+      'minimumStockWarning',
+      value,
+      false,
+    );
   }
 
   toggleWarningEnabled(branchId: string, stockId: string) {
@@ -162,5 +197,58 @@ export class InventoryComponent {
           : branch,
       ),
     );
+
+    // Find current value and toggle it
+    const branch = this.branches().find((b) => b.id === branchId);
+    const stock = branch?.stockItems.find((s) => s.id === stockId);
+    if (stock) {
+      this.updateFormBranchStock(
+        branchId,
+        stockId,
+        'warningEnabled',
+        stock.warningEnabled,
+        false,
+      );
+    }
+  }
+
+  private updateFormBranchStock(
+    branchId: string,
+    stockId: string,
+    field: string,
+    value: number | boolean,
+    isIncrement: boolean,
+  ) {
+    const branchesArray = this.branchesArray();
+    const branchIndex = this.defaultBranches.findIndex(
+      (b) => b.id === branchId,
+    );
+    if (branchIndex === -1) return;
+
+    const branchGroup = branchesArray.at(branchIndex) as FormGroup;
+    if (!branchGroup) return;
+
+    const stockItemsFormArray = branchGroup.get('stockItems');
+    if (!stockItemsFormArray) return;
+
+    const stockIndex = this.defaultBranches[branchIndex].stockItems.findIndex(
+      (s) => s.id === stockId,
+    );
+    if (stockIndex === -1) return;
+
+    const stockControl = (stockItemsFormArray as FormArray).at(
+      stockIndex,
+    ) as FormGroup;
+    if (!stockControl) return;
+
+    const fieldControl = stockControl.get(field);
+    if (fieldControl) {
+      if (isIncrement && typeof value === 'number') {
+        const currentValue = fieldControl.value || 0;
+        fieldControl.setValue(Math.max(0, currentValue + value));
+      } else {
+        fieldControl.setValue(value);
+      }
+    }
   }
 }

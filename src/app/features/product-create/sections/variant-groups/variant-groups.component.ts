@@ -3,7 +3,7 @@ import { TextInputComponent } from '../../../../shared/components/text-input/tex
 import { SelectComponent } from '../../../../shared/components/select/select.component';
 import { InputWithButtonComponent } from '../../../../shared/components/input-with-button/input-with-button.component';
 
-interface Variant {
+export interface Variant {
   id: string;
   name1: string;
   name2: string;
@@ -20,7 +20,7 @@ interface Variant {
   barCode: string;
 }
 
-interface VariantGroup {
+export interface VariantGroup {
   id: string;
   name1: string;
   name2: string;
@@ -238,5 +238,15 @@ export class VariantGroupsComponent {
           : group,
       ),
     );
+  }
+
+  getVariantGroupsData(): {
+    inventoryOnVariants: boolean;
+    groups: VariantGroup[];
+  } {
+    return {
+      inventoryOnVariants: this.inventoryOnVariants(),
+      groups: this.variantGroups(),
+    };
   }
 }

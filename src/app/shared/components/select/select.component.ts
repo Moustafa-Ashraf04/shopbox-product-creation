@@ -1,8 +1,19 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  input,
+  signal,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-select',
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="flex flex-col gap-1">
       <div class="flex items-center gap-1.5">
@@ -39,8 +50,17 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
       <div class="relative">
         <select
           [id]="id()"
-          class="border-border-primary bg-surface-primary text-primary focus:border-brand-primary w-full cursor-pointer appearance-none rounded-lg border px-3.5 py-2.5 pr-10 text-sm focus:outline-none"
+          [value]="value()"
+          [disabled]="isDisabled()"
+          (change)="onSelect($event)"
+          (blur)="onTouched()"
+          class="border-border-primary bg-surface-primary text-primary focus:border-brand-primary w-full cursor-pointer appearance-none rounded-lg border px-3.5 py-2.5 pr-10 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          [class.border-red-500]="error()"
+          [class.focus:border-red-500]="error()"
         >
+          @if (placeholder()) {
+            <option value="" disabled>{{ placeholder() }}</option>
+          }
           @for (option of options(); track option.value) {
             <option [value]="option.value">{{ option.label }}</option>
           }
@@ -59,14 +79,54 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
           />
         </svg>
       </div>
+      @if (error()) {
+        <span class="text-xs text-red-500">{{ error() }}</span>
+      }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => SelectComponent),
+      multi: true,
+    },
+  ],
 })
-export class SelectComponent {
+export class SelectComponent implements ControlValueAccessor {
   id = input.required<string>();
   label = input.required<string>();
   options = input<{ value: string; label: string }[]>([]);
   required = input<boolean>(false);
   tooltip = input<boolean>(false);
+  placeholder = input<string>('');
+  error = input<string>('');
+
+  value = signal<string>('');
+  isDisabled = signal(false);
+
+  private onChange: (value: string) => void = () => {};
+  onTouched: () => void = () => {};
+
+  writeValue(value: string | null): void {
+    this.value.set(value ?? '');
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  onSelect(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    this.value.set(select.value);
+    this.onChange(select.value);
+  }
 }

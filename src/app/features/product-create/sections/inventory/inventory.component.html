@@ -1,5 +1,6 @@
 <section
   class="border-border-primary bg-surface-primary shadow-card rounded-xl border md:rounded-2xl"
+  [formGroup]="formGroup()"
 >
   <!-- Header -->
   <div class="border-border-secondary border-b px-3 py-3 sm:px-6 sm:py-4">
@@ -88,15 +89,15 @@
             (click)="toggleEnableInventory()"
             class="border-border-primary relative inline-flex h-7 w-12 shrink-0 cursor-pointer items-center rounded-full border-2 bg-white p-0.5 transition-colors duration-200 ease-in-out focus:outline-none"
             role="switch"
-            [attr.aria-checked]="enableInventory()"
+            [attr.aria-checked]="enableInventory"
           >
             <span
               aria-hidden="true"
               class="pointer-events-none inline-block h-5 w-5 transform rounded-full shadow-sm transition duration-200 ease-in-out"
-              [class.translate-x-5]="enableInventory()"
-              [class.translate-x-0]="!enableInventory()"
-              [class.bg-brand-primary]="enableInventory()"
-              [class.bg-neutral-secondary]="!enableInventory()"
+              [class.translate-x-5]="enableInventory"
+              [class.translate-x-0]="!enableInventory"
+              [class.bg-brand-primary]="enableInventory"
+              [class.bg-neutral-secondary]="!enableInventory"
             ></span>
           </button>
           <span class="text-primary text-sm font-medium">Enable inventory</span>
@@ -104,7 +105,7 @@
       </div>
 
       <!-- Branches List (shown when inventory is enabled) -->
-      @if (enableInventory()) {
+      @if (enableInventory) {
         <div class="space-y-6">
           @for (branch of branches(); track branch.id) {
             <div class="flex flex-col gap-1.5">

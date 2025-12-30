@@ -1,22 +1,36 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  input,
+  signal,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-radio-group',
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="flex flex-col gap-3">
       @for (option of options(); track option.value) {
         <label
-          [for]="option.value"
+          [for]="name() + '-' + option.value"
           class="flex cursor-pointer items-center gap-3.5"
         >
           <input
             type="radio"
             [name]="name()"
-            [id]="option.value"
+            [id]="name() + '-' + option.value"
             [value]="option.value"
-            [checked]="option.value === selectedValue()"
-            class="accent-brand-primary h-5 w-5 cursor-pointer"
+            [checked]="option.value === value()"
+            [disabled]="isDisabled()"
+            (change)="onRadioChange(option.value)"
+            (blur)="onTouched()"
+            class="accent-brand-primary h-5 w-5 cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
           />
           <span class="text-primary flex items-center gap-2 text-sm">
             {{ option.label }}
@@ -48,9 +62,42 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => RadioGroupComponent),
+      multi: true,
+    },
+  ],
 })
-export class RadioGroupComponent {
+export class RadioGroupComponent implements ControlValueAccessor {
   name = input<string>('radio-group');
   options = input<{ value: string; label: string; tooltip?: boolean }[]>([]);
-  selectedValue = input<string>('');
+
+  value = signal<string>('');
+  isDisabled = signal(false);
+
+  private onChange: (value: string) => void = () => {};
+  onTouched: () => void = () => {};
+
+  writeValue(value: string | null): void {
+    this.value.set(value ?? '');
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  onRadioChange(value: string): void {
+    this.value.set(value);
+    this.onChange(value);
+  }
 }

@@ -1,8 +1,21 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  forwardRef,
+  input,
+  output,
+  signal,
+} from '@angular/core';
+import {
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-input-with-button',
-  imports: [],
+  imports: [ReactiveFormsModule],
   template: `
     <div class="flex flex-col gap-2">
       <div class="flex items-center gap-1.5">
@@ -40,27 +53,89 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
           [id]="id()"
           [type]="type()"
           [placeholder]="placeholder()"
-          [value]="value()"
-          class="border-border-primary bg-surface-primary text-primary shadow-input focus:border-brand-primary w-full rounded-lg border px-3 py-2.5 text-sm focus:outline-none"
+          [value]="internalValue()"
+          [disabled]="isDisabled()"
+          (input)="onInput($event)"
+          (blur)="onTouched()"
+          class="border-border-primary bg-surface-primary text-primary shadow-input focus:border-brand-primary w-full rounded-lg border px-3 py-2.5 text-sm focus:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+          [class.border-red-500]="error()"
+          [class.focus:border-red-500]="error()"
         />
         <button
           type="button"
-          class="bg-surface-brand-secondary text-primary rounded-lg p-3.5 text-sm font-semibold whitespace-nowrap"
+          class="bg-surface-brand-secondary text-primary cursor-pointer rounded-lg p-3.5 text-sm font-semibold whitespace-nowrap"
+          (click)="onButtonClick()"
         >
           {{ buttonLabel() }}
         </button>
       </div>
+      @if (error()) {
+        <span class="text-xs text-red-500">{{ error() }}</span>
+      }
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => InputWithButtonComponent),
+      multi: true,
+    },
+  ],
 })
-export class InputWithButtonComponent {
+export class InputWithButtonComponent implements ControlValueAccessor {
   id = input.required<string>();
   label = input.required<string>();
   buttonLabel = input.required<string>();
   type = input<string>('text');
   placeholder = input<string>('');
-  value = input<string>('');
   tooltip = input<boolean>(false);
   required = input<boolean>(false);
+  error = input<string>('');
+  /** For non-reactive form usage */
+  value = input<string>('');
+
+  buttonClick = output<void>();
+
+  internalValue = signal<string>('');
+  isDisabled = signal(false);
+
+  private onChange: (value: string) => void = () => {};
+  onTouched: () => void = () => {};
+
+  constructor() {
+    // Sync input value to internal signal when used without reactive forms
+    effect(() => {
+      const inputValue = this.value();
+      if (inputValue) {
+        this.internalValue.set(inputValue);
+      }
+    });
+  }
+
+  writeValue(value: string | null): void {
+    this.internalValue.set(value ?? '');
+  }
+
+  registerOnChange(fn: (value: string) => void): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: () => void): void {
+    this.onTouched = fn;
+  }
+
+  setDisabledState(isDisabled: boolean): void {
+    this.isDisabled.set(isDisabled);
+  }
+
+  onInput(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    this.internalValue.set(input.value);
+    this.onChange(input.value);
+  }
+
+  onButtonClick(): void {
+    this.buttonClick.emit();
+  }
 }

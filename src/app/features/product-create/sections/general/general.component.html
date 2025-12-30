@@ -1,5 +1,6 @@
 <section
   class="border-border-primary bg-surface-primary shadow-card rounded-xl border md:rounded-2xl"
+  [formGroup]="formGroup()"
 >
   <!-- Header -->
   <div class="p-3">
@@ -54,12 +55,16 @@
             id="productName"
             label="Product name"
             [required]="true"
-            value="Strawberry cake"
+            formControlName="productName"
+            [error]="getFieldError()('productName') ?? ''"
           />
           <span class="text-secondary text-sm">Displayed on cash register</span>
         </div>
 
-        <app-radio-group [options]="cashRegisterOptions" selectedValue="same" />
+        <app-radio-group
+          [options]="cashRegisterOptions"
+          formControlName="cashRegisterOption"
+        />
       </div>
 
       <!-- Product Details -->
@@ -68,7 +73,7 @@
         <app-textarea
           id="productDescription"
           label="Product description"
-          value="Strawberry Cake, crafted with soft vanilla sponge, layered with fresh strawberry filling, and topped with fluffy whipped cream and juicy strawberries. A perfect balance of sweetness and freshness, ideal for any celebration or a delightful treat!"
+          formControlName="productDescription"
         />
 
         <!-- Category -->
@@ -78,6 +83,9 @@
           [required]="true"
           [tooltip]="true"
           [options]="categoryOptions"
+          formControlName="category"
+          placeholder="Select a category"
+          [error]="getFieldError()('category') ?? ''"
         />
 
         <!-- Price Row - Stack on mobile -->
@@ -88,15 +96,16 @@
             type="number"
             [required]="true"
             [tooltip]="true"
-            value="125"
+            formControlName="price"
             suffix="incl. VAT"
+            [error]="getFieldError()('price') ?? ''"
           />
           <app-text-input
             id="takeAwayPrice"
             label="Take away price"
             type="number"
             [tooltip]="true"
-            value="132"
+            formControlName="takeAwayPrice"
             suffix="incl. VAT"
           />
         </div>
@@ -108,7 +117,7 @@
             label="Purchase price"
             type="number"
             [tooltip]="true"
-            value="0"
+            formControlName="purchasePrice"
             suffix="excl. VAT"
           />
           <app-select-with-toggle
@@ -116,7 +125,7 @@
             label="Unit"
             [tooltip]="true"
             [options]="unitOptions"
-            [enabled]="false"
+            formControlName="unit"
           />
         </div>
 
@@ -127,12 +136,14 @@
             label="Tax group Dine in"
             [tooltip]="true"
             [options]="taxGroupOptions"
+            formControlName="taxGroupDineIn"
           />
           <app-select
             id="taxGroupToGo"
             label="Tax group To Go"
             [tooltip]="true"
             [options]="taxGroupToGoOptions"
+            formControlName="taxGroupToGo"
           />
         </div>
 
@@ -142,14 +153,14 @@
             id="skuCode"
             label="SKU code"
             [tooltip]="true"
-            value="SB-8214155"
+            formControlName="skuCode"
             buttonLabel="New SKU code"
           />
           <app-input-with-button
             id="barCode"
             label="Bar code"
             [tooltip]="true"
-            value="012421000045521"
+            formControlName="barCode"
             buttonLabel="New bar code"
           />
         </div>
@@ -157,6 +168,7 @@
         <!-- Price Settings -->
         <div
           class="border-border-primary bg-surface-primary shadow-card rounded-lg border"
+          formGroupName="priceSettings"
         >
           <h3
             class="text-primary px-3 py-3 text-base font-semibold sm:px-4 sm:py-3.5"
@@ -170,18 +182,20 @@
               <app-checkbox
                 id="customPrice"
                 label="Custom price"
-                [checked]="true"
                 [tooltip]="true"
+                formControlName="customPrice"
               />
               <app-checkbox
                 id="quantityPrices"
                 label="Quantity prices"
                 [tooltip]="true"
+                formControlName="quantityPrices"
               />
               <app-checkbox
                 id="closedForDiscount"
                 label="Closed for discount"
                 [tooltip]="true"
+                formControlName="closedForDiscount"
               />
             </div>
             <div
@@ -191,18 +205,20 @@
                 id="externalReferenceField"
                 label="External reference field"
                 [tooltip]="true"
+                formControlName="externalReferenceField"
               />
               <app-checkbox
                 id="requireExternalReferenceField"
                 label="Require external reference filed"
                 [disabled]="true"
                 [tooltip]="true"
+                formControlName="requireExternalReferenceField"
               />
             </div>
           </div>
         </div>
-        <app-product-tags />
-        <app-product-filters />
+        <app-product-tags formControlName="tags" />
+        <app-product-filters formControlName="filters" />
       </div>
     </div>
   }
